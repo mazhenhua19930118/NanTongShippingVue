@@ -269,6 +269,7 @@
         <module>ruoyi-insurance</module>
         <module>ruoyi-dispatch</module>
         <module>ruoyi-finance</module>
+
     </modules>
     <packaging>pom</packaging>
 
