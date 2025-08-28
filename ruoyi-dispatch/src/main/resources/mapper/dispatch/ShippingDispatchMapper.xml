@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.dispatch.mapper.ShippingDispatchMapper">
+    
+    <resultMap type="ShippingDispatch" id="ShippingDispatchResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="deposit"    column="deposit"    />
+        <result property="shippingCost"    column="shipping_cost"    />
+        <result property="isPreInsurance"    column="is_pre_insurance"    />
+    </resultMap>
+
+    <sql id="selectShippingDispatchVo">
+        select id, order_id, deposit, shipping_cost, is_pre_insurance from shipping_dispatch
+    </sql>
+
+    <select id="selectShippingDispatchList" parameterType="ShippingDispatch" resultMap="ShippingDispatchResult">
+        <include refid="selectShippingDispatchVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="deposit != null "> and deposit = #{deposit}</if>
+            <if test="shippingCost != null "> and shipping_cost = #{shippingCost}</if>
+            <if test="isPreInsurance != null  and isPreInsurance != ''"> and is_pre_insurance = #{isPreInsurance}</if>
+        </where>
+    </select>
+    
+    <select id="selectShippingDispatchById" parameterType="Long" resultMap="ShippingDispatchResult">
+        <include refid="selectShippingDispatchVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertShippingDispatch" parameterType="ShippingDispatch" useGeneratedKeys="true" keyProperty="id">
+        insert into shipping_dispatch
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="deposit != null">deposit,</if>
+            <if test="shippingCost != null">shipping_cost,</if>
+            <if test="isPreInsurance != null">is_pre_insurance,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="deposit != null">#{deposit},</if>
+            <if test="shippingCost != null">#{shippingCost},</if>
+            <if test="isPreInsurance != null">#{isPreInsurance},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShippingDispatch" parameterType="ShippingDispatch">
+        update shipping_dispatch
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="deposit != null">deposit = #{deposit},</if>
+            <if test="shippingCost != null">shipping_cost = #{shippingCost},</if>
+            <if test="isPreInsurance != null">is_pre_insurance = #{isPreInsurance},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShippingDispatchById" parameterType="Long">
+        delete from shipping_dispatch where id = #{id}
+    </delete>
+
+    <delete id="deleteShippingDispatchByIds" parameterType="String">
+        delete from shipping_dispatch where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

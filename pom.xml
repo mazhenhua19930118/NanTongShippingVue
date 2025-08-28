@@ -242,6 +242,16 @@
                 <artifactId>ruoyi-insurance</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-dispatch</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-finance</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -257,6 +267,8 @@
         <module>ruoyi-task</module>
         <module>ruoyi-upload</module>
         <module>ruoyi-insurance</module>
+        <module>ruoyi-dispatch</module>
+        <module>ruoyi-finance</module>
     </modules>
     <packaging>pom</packaging>
 

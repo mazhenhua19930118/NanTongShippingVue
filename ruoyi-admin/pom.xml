@@ -81,6 +81,14 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-insurance</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-dispatch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-finance</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
