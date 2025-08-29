@@ -77,7 +77,7 @@ public class ShippingContractController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody ShippingContract shippingContract)
     {
-        return toAjax(shippingContractService.insertShippingContract(shippingContract));
+        return shippingContractService.insertShippingContract(shippingContract);
     }
 
     /**

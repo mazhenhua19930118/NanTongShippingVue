@@ -41,21 +41,25 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="主合同是否签订" prop="mainContractSign">
-        <el-input
-          v-model="queryParams.mainContractSign"
-          placeholder="请输入主合同是否签订"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="主合同是否签订 1签订 0未签订" prop="mainContractSign">
+        <el-select v-model="queryParams.mainContractSign" placeholder="请选择主合同是否签订 1签订 0未签订" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_yes_no"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="子合同是否签订" prop="subContractSign">
-        <el-input
-          v-model="queryParams.subContractSign"
-          placeholder="请输入子合同是否签订"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="子合同是否签订 1签订 0未签订" prop="subContractSign">
+        <el-select v-model="queryParams.subContractSign" placeholder="请选择子合同是否签订 1签订 0未签订" clearable>
+          <el-option
+            v-for="dict in dict.type.sys_yes_no"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="客户号" prop="customerNo">
         <el-input
@@ -127,13 +131,22 @@
 
     <el-table v-loading="loading" :data="contractList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="${comment}" align="center" prop="id" />
       <el-table-column label="主合同编号" align="center" prop="mainContractNo" />
       <el-table-column label="主合同名称" align="center" prop="mainContractName" />
       <el-table-column label="子合同编号" align="center" prop="subContractNo" />
       <el-table-column label="子合同名称" align="center" prop="subContractName" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
-      <el-table-column label="主合同是否签订" align="center" prop="mainContractSign" />
-      <el-table-column label="子合同是否签订" align="center" prop="subContractSign" />
+      <el-table-column label="主合同是否签订 1签订 0未签订" align="center" prop="mainContractSign">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.mainContractSign"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="子合同是否签订 1签订 0未签订" align="center" prop="subContractSign">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.subContractSign"/>
+        </template>
+      </el-table-column>
       <el-table-column label="客户号" align="center" prop="customerNo" />
       <el-table-column label="客户名称" align="center" prop="customerName" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -155,7 +168,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -182,11 +195,25 @@
         <el-form-item label="订单编号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入订单编号" />
         </el-form-item>
-        <el-form-item label="主合同是否签订" prop="mainContractSign">
-          <el-input v-model="form.mainContractSign" placeholder="请输入主合同是否签订" />
+        <el-form-item label="主合同是否签订 1签订 0未签订" prop="mainContractSign">
+          <el-select v-model="form.mainContractSign" placeholder="请选择主合同是否签订 1签订 0未签订">
+            <el-option
+              v-for="dict in dict.type.sys_yes_no"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="子合同是否签订" prop="subContractSign">
-          <el-input v-model="form.subContractSign" placeholder="请输入子合同是否签订" />
+        <el-form-item label="子合同是否签订 1签订 0未签订" prop="subContractSign">
+          <el-select v-model="form.subContractSign" placeholder="请选择子合同是否签订 1签订 0未签订">
+            <el-option
+              v-for="dict in dict.type.sys_yes_no"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="客户号" prop="customerNo">
           <el-input v-model="form.customerNo" placeholder="请输入客户号" />
@@ -208,6 +235,7 @@ import { listContract, getContract, delContract, addContract, updateContract } f
 
 export default {
   name: "Contract",
+  dicts: ['sys_yes_no'],
   data() {
     return {
       // 遮罩层

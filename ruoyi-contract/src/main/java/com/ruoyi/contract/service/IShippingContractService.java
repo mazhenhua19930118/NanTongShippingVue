@@ -1,6 +1,8 @@
 package com.ruoyi.contract.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.contract.domain.ShippingContract;
 
 /**
@@ -33,7 +35,7 @@ public interface IShippingContractService
      * @param shippingContract 合同管理
      * @return 结果
      */
-    public int insertShippingContract(ShippingContract shippingContract);
+    public AjaxResult insertShippingContract(ShippingContract shippingContract);
 
     /**
      * 修改合同管理

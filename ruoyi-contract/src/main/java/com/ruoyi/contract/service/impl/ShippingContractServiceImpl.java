@@ -1,12 +1,16 @@
 package com.ruoyi.contract.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.generator.util.GenerateCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.contract.mapper.ShippingContractMapper;
 import com.ruoyi.contract.domain.ShippingContract;
 import com.ruoyi.contract.service.IShippingContractService;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 合同管理Service业务层处理
@@ -19,7 +23,10 @@ public class ShippingContractServiceImpl implements IShippingContractService
 {
     @Autowired
     private ShippingContractMapper shippingContractMapper;
+    @Autowired
+    private GenerateCodeUtils generateCodeUtils;
 
+    public static final String INVOICE_XQ = "XQ";
     /**
      * 查询合同管理
      * 
@@ -51,10 +58,19 @@ public class ShippingContractServiceImpl implements IShippingContractService
      * @return 结果
      */
     @Override
-    public int insertShippingContract(ShippingContract shippingContract)
-    {
+    public AjaxResult insertShippingContract(ShippingContract shippingContract) {
         shippingContract.setCreateTime(DateUtils.getNowDate());
-        return shippingContractMapper.insertShippingContract(shippingContract);
+        //生成订单号
+        String orderCode = generateCodeUtils.generateOrderCode(INVOICE_XQ);
+        shippingContract.setOrderId(orderCode);
+        ShippingContract query = new ShippingContract();
+        query.setMainContractNo(shippingContract.getMainContractNo());
+        List<ShippingContract> shippingContracts = shippingContractMapper.selectShippingContractList(query);
+        if (!CollectionUtils.isEmpty(shippingContracts)) {
+            return AjaxResult.error("主合同编号已存在");
+        }
+        shippingContractMapper.insertShippingContract(shippingContract);
+        return AjaxResult.success("操作成功");
     }
 
     /**
