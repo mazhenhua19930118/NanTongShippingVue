@@ -19,6 +19,7 @@ public class ShippingGoods extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** id */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     /** 托运单位 */

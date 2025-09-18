@@ -1,6 +1,8 @@
 package com.ruoyi.goods.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.goods.domain.ShippingGoods;
 
 /**
@@ -42,6 +44,8 @@ public interface IShippingGoodsService
      * @return 结果
      */
     public int updateShippingGoods(ShippingGoods shippingGoods);
+
+    public AjaxResult publishShippingGoods(ShippingGoods shippingGoods);
 
     /**
      * 批量删除货源信息

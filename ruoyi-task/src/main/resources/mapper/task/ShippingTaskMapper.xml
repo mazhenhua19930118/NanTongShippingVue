@@ -102,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateShippingTask" parameterType="ShippingTask">
         update shipping_task
         <trim prefix="SET" suffixOverrides=",">
-            <if test="order_id != null">order_id = #{orderId},</if>
+            <if test="orderId != null">order_id = #{orderId},</if>
             <if test="taskStatus != null">task_status = #{taskStatus},</if>
             <if test="assignUserId != null">assign_user_id = #{assignUserId},</if>
             <if test="createBy != null">create_by = #{createBy},</if>

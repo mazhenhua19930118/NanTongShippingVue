@@ -172,14 +172,14 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['goods:goods:remove']"
-          >删除</el-button>
+            icon="el-icon-edit"
+            @click="handlePublish(scope.row)"
+          >发布</el-button>
+
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -235,11 +235,58 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :title="publishTitle" :visible.sync="publishOpen" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="托运单位" prop="shippingUnit">
+          <el-input v-model="form.shippingUnit" placeholder="请输入托运单位" disabled/>
+        </el-form-item>
+        <el-form-item label="订单编号" prop="orderId">
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>
+        </el-form-item>
+        <el-form-item label="海伦号" prop="helenNumber">
+          <el-input v-model="form.helenNumber" placeholder="请输入海伦号" disabled/>
+        </el-form-item>
+        <el-form-item label="船号" prop="shipNumber">
+          <el-input v-model="form.shipNumber" placeholder="请输入船号" disabled/>
+        </el-form-item>
+        <el-form-item label="中转港" prop="transitPort">
+          <el-input v-model="form.transitPort" placeholder="请输入中转港" disabled/>
+        </el-form-item>
+        <el-form-item label="目的港" prop="destinationPort">
+          <el-input v-model="form.destinationPort" placeholder="请输入目的港" disabled/>
+        </el-form-item>
+        <el-form-item label="重量" prop="weight">
+          <el-input v-model="form.weight" placeholder="请输入重量" disabled/>
+        </el-form-item>
+        <el-form-item label="1吨 2千克" prop="weightUnit">
+          <el-input v-model="form.weightUnit" placeholder="请输入1吨 2千克" disabled/>
+        </el-form-item>
+        <el-form-item label="货物" prop="goods">
+          <el-input v-model="form.goods" placeholder="请输入货物" disabled/>
+        </el-form-item>
+        <el-form-item label="发布者" prop="publishBy">
+          <el-input v-model="form.publishBy" placeholder="请输入发布者" readonly/>
+        </el-form-item>
+        <el-form-item label="发布时间" prop="publishTime" disabled>
+          <el-date-picker clearable
+                          v-model="form.publishTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择发布时间" disabled>
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitPublishForm">发 布</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listGoods, getGoods, delGoods, addGoods, updateGoods } from "@/api/goods/goods"
+import {listGoods, getGoods, delGoods, addGoods, updateGoods, publishGoods} from "@/api/goods/goods"
 
 export default {
   name: "Goods",
@@ -261,8 +308,10 @@ export default {
       goodsList: [],
       // 弹出层标题
       title: "",
+      publishTitle: "",
       // 是否显示弹出层
       open: false,
+      publishOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -360,6 +409,15 @@ export default {
         this.title = "修改货源信息"
       })
     },
+    handlePublish(row){
+      this.reset()
+      const id = row.id || this.ids
+      getGoods(id).then(response => {
+        this.form = response.data
+        this.publishOpen = true
+        this.publishTitle = "发布货源信息"
+      })
+    },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -376,6 +434,21 @@ export default {
               this.open = false
               this.getList()
             })
+          }
+        }
+      })
+    },
+    submitPublishForm(){
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != null) {
+            publishGoods(this.form).then(response => {
+              this.$modal.msgSuccess("发布成功")
+              this.publishOpen = false;
+              this.getList()
+            })
+          } else {
+            this.$modal.msgSuccess("发布失败！未查询到ID")
           }
         }
       })

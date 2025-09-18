@@ -35,6 +35,14 @@ export function updateGoods(data) {
   })
 }
 
+export function publishGoods(data) {
+  return request({
+    url: '/goods/goods/publish',
+    method: 'post',
+    data: data
+  })
+}
+
 // 删除货源信息
 export function delGoods(id) {
   return request({

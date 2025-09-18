@@ -1,5 +1,6 @@
 package com.ruoyi.goods.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -89,6 +90,19 @@ public class ShippingGoodsController extends BaseController
     public AjaxResult edit(@RequestBody ShippingGoods shippingGoods)
     {
         return toAjax(shippingGoodsService.updateShippingGoods(shippingGoods));
+    }
+
+    /**
+     * 发布
+     * @param shippingGoods
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('goods:goods:publish')")
+    @Log(title = "货源信息", businessType = BusinessType.UPDATE)
+    @PostMapping("publish")
+    public AjaxResult publish(@RequestBody ShippingGoods shippingGoods)
+    {
+        return shippingGoodsService.publishShippingGoods(shippingGoods);
     }
 
     /**
