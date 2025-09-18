@@ -352,6 +352,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
+      this.publishOpen = false
       this.reset()
     },
     // 表单重置
