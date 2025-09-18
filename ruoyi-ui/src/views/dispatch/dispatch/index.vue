@@ -170,7 +170,7 @@
                 :data="couriers"
                 style="width: 100%"
                 :row-class-name="tableRowClassName"
-                @selection-change="handleSelectionChange">
+                @selection-change="handlePublishSelectionChange">
         <!-- 使用多选框列 -->
         <el-table-column type="selection"
                          width="55">
@@ -197,7 +197,7 @@
 </template>
 
 <script>
-import { listDispatch, getDispatch, delDispatch, addDispatch, updateDispatch,selectNqPeople,getUserByDispatchGoods  } from "@/api/dispatch/dispatch"
+import { listDispatch, getDispatch, delDispatch, addDispatch, updateDispatch,selectNqPeople,getUserByDispatchGoods,dispatchToUser } from "@/api/dispatch/dispatch"
 import { getFieldsFromList, arrLength, formatTaskStatus } from "@/common/common";
 export default {
   name: "Dispatch",
@@ -249,6 +249,10 @@ export default {
   methods: {
     dispatchCancel () {
       this.isDispatchOrderShow = false;
+    },
+    // 多选框选中数据
+    handlePublishSelectionChange (val) {
+      this.selectedCouriers = val;
     },
     /** 选择派送的人员提交*/
     submitSelection () {

@@ -133,7 +133,8 @@ public class ShippingDispatchController extends BaseController
         shippingTask.setUpdateBy(getUsername());
         //todo 生成船只使用记录
 //        this.generateRecords(shippingTask.getGoodsId());
-        return toAjax(shippingTaskService.insertShippingTask(shippingTask));
+        shippingTaskService.generateTaskAndDetails(shippingTask);
+        return AjaxResult.success();
     }
 
     /**
