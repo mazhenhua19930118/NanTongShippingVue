@@ -42,3 +42,28 @@ export function delDispatch(id) {
     method: 'delete'
   })
 }
+
+// 查询本单派送人员
+export function getUserByDispatchGoods (data) {
+  return request({
+    url: '/dispatch/dispatch/getUserByDispatchGoods',
+    method: 'post',
+    data: data
+  })
+}
+
+export function selectNqPeople () {
+  return request({
+    url: '/system/post/selectNqPeople',
+    method: 'get'
+  })
+}
+
+// 派单
+export function dispatchToUser (data) {
+  return request({
+    url: '/dispatch/dispatch/dispatchToUser',
+    method: 'post',
+    data: data
+  })
+}

@@ -114,10 +114,17 @@
             @click="handleDelete(scope.row)"
             v-hasPermi="['dispatch:dispatch:remove']"
           >删除</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="dispatchOrder(scope.row)"
+            v-hasPermi="['dispatch:dispatch:edit']"
+          >派单</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -154,17 +161,53 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="派单"
+               :visible.sync="isDispatchOrderShow"
+               width="500px"
+               append-to-body>
+      <el-table ref="multipleTable"
+                :data="couriers"
+                style="width: 100%"
+                :row-class-name="tableRowClassName"
+                @selection-change="handleSelectionChange">
+        <!-- 使用多选框列 -->
+        <el-table-column type="selection"
+                         width="55">
+        </el-table-column>
+        <!-- 人员名字列 -->
+        <el-table-column prop="userName"
+                         label="内勤人员"
+                         width="200">
+        </el-table-column>
+        <!-- 其他信息列（可选） -->
+        <el-table-column prop="phonenumber"
+                         label="联系电话"
+                         width="200">
+        </el-table-column>
+      </el-table>
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button type="primary"
+                   @click="submitSelection">确 定</el-button>
+        <el-button @click="dispatchCancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listDispatch, getDispatch, delDispatch, addDispatch, updateDispatch } from "@/api/dispatch/dispatch"
-
+import { listDispatch, getDispatch, delDispatch, addDispatch, updateDispatch,selectNqPeople,getUserByDispatchGoods  } from "@/api/dispatch/dispatch"
+import { getFieldsFromList, arrLength, formatTaskStatus } from "@/common/common";
 export default {
   name: "Dispatch",
   dicts: ['sys_yes_no'],
   data() {
     return {
+      isDispatchOrderShow: false,
+      tableRowClassName: '',
+      couriers: [],
+      selectedCouriers: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -201,8 +244,41 @@ export default {
   },
   created() {
     this.getList()
+    this.getNqList();
   },
   methods: {
+    dispatchCancel () {
+      this.isDispatchOrderShow = false;
+    },
+    /** 选择派送的人员提交*/
+    submitSelection () {
+      if (this.selectedCouriers.length === 0) {
+        this.$message.warning('请选择至少一个人员');
+      } else if (this.selectedCouriers.length > 1) {
+        this.$message.warning('只能选择一个人员');
+      } else {
+        let data = {};
+        let userId = getFieldsFromList(this.selectedCouriers, "userId")[0];
+        data.goodsId = this.goodsId;
+        data.assignUserId = userId;
+        console.log("data", data)
+        dispatchToUser(data).then(response => {
+          if (response.code === 200) {
+            this.$modal.msgSuccess("操作成功");
+            this.getList();
+          } else {
+            this.$modal.msgError(response.msg);
+          }
+        });
+        this.isDispatchOrderShow = false;
+      }
+    },
+    /** 查询所有内勤人员*/
+    getNqList () {
+      selectNqPeople().then(response => {
+        this.couriers = response.data;
+      });
+    },
     /** 查询调度管理列表 */
     getList() {
       this.loading = true
@@ -295,7 +371,32 @@ export default {
       this.download('dispatch/dispatch/export', {
         ...this.queryParams
       }, `dispatch_${new Date().getTime()}.xlsx`)
-    }
+    },
+    /** 派单*/
+    dispatchOrder (row) {
+      this.isDispatchOrderShow = true;
+      this.tableRowClassName = '';
+      //清空选中
+      if (this.$refs.multipleTable) {
+        this.$refs.multipleTable.clearSelection();
+      }
+      this.orderId = '';
+      this.orderId = row.orderId;
+      let data = {};
+      data.orderId = row.orderId
+      //查询本单派送人员
+      getUserByDispatchGoods(data).then(response => {
+        if (arrLength(response.data) > 0) {
+          let userId = response.data[0]
+          this.couriers.forEach(v => {
+            if (v.userId === userId) {
+              this.$refs.multipleTable.toggleRowSelection(v, true);
+              this.tableRowClassName = 'row-disabled';
+            }
+          });
+        }
+      });
+    },
   }
 }
 </script>

@@ -1,6 +1,7 @@
 package com.ruoyi.goods.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.TaskStatus;
@@ -32,6 +33,8 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
     private ShippingGoodsMapper shippingGoodsMapper;
     @Autowired
     private IShippingTaskService iShippingTaskService;
+    @Autowired
+    private ShippingDispatchMapper shippingDispatchMapper;
 
     /**
      * 查询货源信息
@@ -96,6 +99,18 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
         shippingGoods.setUpdateBy(getUsername());
         shippingGoods.setStatus(TaskStatus.publish.getCode());
         shippingGoodsMapper.updateShippingGoods(shippingGoods);
+        ShippingDispatch shippingDispatch = new ShippingDispatch();
+        shippingDispatch.setOrderId(shippingGoods.getOrderId());
+        List<ShippingDispatch> shippingDispatches = shippingDispatchMapper.selectShippingDispatchList(shippingDispatch);
+        if(!CollectionUtils.isEmpty(shippingDispatches)){
+            List<Long> ids = shippingDispatches.stream().map(ShippingDispatch::getId).collect(Collectors.toList());
+            Long[] idsArray = new Long[ids.size()];
+            for (int i = 0; i < ids.size(); i++) {
+                idsArray[i] = ids.get(i);
+            }
+            shippingDispatchMapper.deleteShippingDispatchByIds(idsArray);
+        }
+        shippingDispatchMapper.insertShippingDispatch(shippingDispatch);
         ShippingTask shippingTask = new ShippingTask();
         shippingTask.setOrderId(shippingGoods.getOrderId());
         shippingTask.setTaskStatus(TaskStatus.publish.getCode());

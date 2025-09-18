@@ -126,4 +126,14 @@ public class SysPostController extends BaseController
         List<SysPost> posts = postService.selectPostAll();
         return success(posts);
     }
+
+    /**
+     * 查询所有内勤人员
+     */
+//    @PreAuthorize("@ss.hasPermi('system:user:list')")
+    @GetMapping("/selectNqPeople")
+    public AjaxResult selectNqPeople()
+    {
+        return success(postService.selectNqPeople());
+    }
 }

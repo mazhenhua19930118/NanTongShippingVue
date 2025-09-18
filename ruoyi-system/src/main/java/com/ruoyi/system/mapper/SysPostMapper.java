@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.SysPost;
 
 /**
@@ -96,4 +98,10 @@ public interface SysPostMapper
      * @return 结果
      */
     public SysPost checkPostCodeUnique(String postCode);
+
+    /**
+     * 查询所有内勤人员
+     * @return
+     */
+    public  List<SysUser> selectNqPeople();
 }

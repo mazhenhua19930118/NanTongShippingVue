@@ -16,7 +16,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="updateTime"    column="update_time"   />
 		<result property="remark"        column="remark"        />
 	</resultMap>
-	
+	<resultMap type="SysUser" id="SysUserResult">
+		<id     property="userId"       column="user_id"      />
+		<result property="deptId"       column="dept_id"      />
+		<result property="userName"     column="user_name"    />
+		<result property="nickName"     column="nick_name"    />
+		<result property="email"        column="email"        />
+		<result property="phonenumber"  column="phonenumber"  />
+		<result property="sex"          column="sex"          />
+		<result property="avatar"       column="avatar"       />
+		<result property="password"     column="password"     />
+		<result property="status"       column="status"       />
+		<result property="delFlag"      column="del_flag"     />
+		<result property="loginIp"      column="login_ip"     />
+		<result property="loginDate"    column="login_date"   />
+		<result property="createBy"     column="create_by"    />
+		<result property="createTime"   column="create_time"  />
+		<result property="updateBy"     column="update_by"    />
+		<result property="updateTime"   column="update_time"  />
+		<result property="remark"       column="remark"       />
+	</resultMap>
 	<sql id="selectPostVo">
         select post_id, post_code, post_name, post_sort, status, create_by, create_time, remark 
 		from sys_post
@@ -118,5 +137,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			#{postId}
         </foreach> 
  	</delete>
-
+	<!--	查询内勤人员-->
+	<select id="selectNqPeople"  resultMap="SysUserResult">
+		select u.*
+		from sys_post p
+				 inner join sys_user_post up on up.post_id = p.post_id
+				 inner join sys_user u on u.user_id = up.user_id
+		where p.post_code ='nq' and p.status = '0';
+	</select>
 </mapper> 

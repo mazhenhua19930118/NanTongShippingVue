@@ -1,9 +1,20 @@
 package com.ruoyi.dispatch.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtil;
+import com.ruoyi.task.domain.ShippingTask;
+import com.ruoyi.task.domain.ShippingTaskDetail;
+import com.ruoyi.task.service.IShippingTaskDetailService;
+import com.ruoyi.task.service.IShippingTaskService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.ruoyi.common.annotation.Log;
@@ -27,6 +38,10 @@ public class ShippingDispatchController extends BaseController
 {
     @Autowired
     private IShippingDispatchService shippingDispatchService;
+    @Autowired
+    private IShippingTaskService shippingTaskService;
+    @Autowired
+    private IShippingTaskDetailService shippingTaskDetailService;
 
     /**
      * 查询调度管理列表
@@ -95,4 +110,46 @@ public class ShippingDispatchController extends BaseController
     {
         return toAjax(shippingDispatchService.deleteShippingDispatchByIds(ids));
     }
+
+    @Log(title = "派单", businessType = BusinessType.INSERT)
+    @PostMapping("/dispatchToUser")
+    public AjaxResult dispatchToUser(@RequestBody ShippingTask shippingTask)
+    {
+        shippingTask.setTaskStatus(TaskStatus.dispatch.getCode());
+        List<ShippingTask> shippingTasks = shippingTaskService.selectShippingTaskList(shippingTask);
+        if(!CollectionUtils.isEmpty(shippingTasks)){
+            return AjaxResult.error("本单已派送给该人员，不能重复派单！");
+        }
+        ShippingTask query = new ShippingTask();
+        query.setOrderId(shippingTask.getOrderId());
+        List<ShippingTask> queryList = shippingTaskService.selectShippingTaskList(query);
+        if (CollectionUtils.isEmpty(queryList)) {
+            return AjaxResult.error("本单还未生成任务，不能派单！");
+        }
+        if(StringUtil.isEquals(queryList.get(0).getTaskStatus(),TaskStatus.termination.getCode())){
+            return AjaxResult.error("本单任务已经终止，不能派单！");
+        }
+        shippingTask.setCreateBy(getUsername());
+        shippingTask.setUpdateBy(getUsername());
+        //todo 生成船只使用记录
+//        this.generateRecords(shippingTask.getGoodsId());
+        return toAjax(shippingTaskService.insertShippingTask(shippingTask));
+    }
+
+    /**
+     * 查询本单派送人员
+     */
+    @Log(title = "查询本单派送人员", businessType = BusinessType.INSERT)
+    @PostMapping("/getUserByDispatchGoods")
+    public AjaxResult getUserByDispatchGoods(@RequestBody ShippingTaskDetail shippingTaskDetail)
+    {
+        shippingTaskDetail.setTaskStatus(TaskStatus.dispatch.getCode());
+        List<ShippingTaskDetail> shippingTaskDetailList = shippingTaskDetailService.selectShippingTaskDetailList(shippingTaskDetail);
+        if(CollectionUtils.isEmpty(shippingTaskDetailList)){
+            return AjaxResult.success(new ArrayList<>());
+        }
+        List<Long> directorIds = shippingTaskDetailList.stream().map(ShippingTaskDetail::getDirector).collect(Collectors.toList());
+        return  AjaxResult.success(directorIds);
+    }
+
 }
