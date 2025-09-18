@@ -28,6 +28,12 @@ public class StringUtil {
         return str == null || str.trim().isEmpty() || isEquals(NULL,str);
     }
 
+    public static boolean isNotEmpty(String str) {
+        boolean flag = str == null || str.trim().isEmpty() || isEquals(NULL, str);
+        return !flag;
+    }
+
+
     /**
      * 将 long 类型转换为字符串
      *

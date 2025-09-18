@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectShippingTaskDetailList" parameterType="ShippingTaskDetail" resultMap="ShippingTaskDetailResult">
         <include refid="selectShippingTaskDetailVo"/>
         <where>
-            <if test="goodsId != null "> and order_id = #{orderId}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="taskStatus != null  and taskStatus != ''"> and task_status = #{taskStatus}</if>
             <if test="director != null "> and director = #{director}</if>
             <if test="creator != null "> and creator = #{creator}</if>
@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertShippingTaskDetail" parameterType="ShippingTaskDetail" useGeneratedKeys="true" keyProperty="id">
         insert into shipping_task_detail
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="order_id != null">orderId,</if>
+            <if test="orderId != null">order_id,</if>
             <if test="taskStatus != null">task_status,</if>
             <if test="taskId != null">task_id,</if>
             <if test="director != null">director,</if>
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creator != null">creator,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="order_id != null">#{orderId},</if>
+            <if test="orderId != null">#{orderId},</if>
             <if test="taskStatus != null">#{taskStatus},</if>
             <if test="taskId != null">#{taskId},</if>
             <if test="director != null">#{director},</if>

@@ -24,7 +24,7 @@ public interface ShippingTaskDetailMapper
 
     public List<ShippingTaskDetail> selectShippingTaskDetailByTaskId(Long taskId);
 
-    public List<ShippingTaskDetail> selectShippingTaskDetailByRelatedId(String goodsId);
+    public List<ShippingTaskDetail> selectShippingTaskDetailByRelatedId(String orderId);
 
     /**
      * 查询【请填写功能名称】列表

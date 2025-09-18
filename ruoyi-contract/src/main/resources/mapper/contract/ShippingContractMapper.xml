@@ -26,17 +26,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 
     <select id="selectShippingContractList" parameterType="ShippingContract" resultMap="ShippingContractResult">
-        <include refid="selectShippingContractVo"/>
+        select *  from shipping_contract c inner join shipping_task t on c.order_id = t.order_id
         <where>  
-            <if test="mainContractNo != null  and mainContractNo != ''"> and main_contract_no = #{mainContractNo}</if>
-            <if test="mainContractName != null  and mainContractName != ''"> and main_contract_name like concat('%', #{mainContractName}, '%')</if>
-            <if test="subContractNo != null  and subContractNo != ''"> and sub_contract_no = #{subContractNo}</if>
-            <if test="subContractName != null  and subContractName != ''"> and sub_contract_name like concat('%', #{subContractName}, '%')</if>
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="mainContractSign != null  and mainContractSign != ''"> and main_contract_sign = #{mainContractSign}</if>
-            <if test="subContractSign != null  and subContractSign != ''"> and sub_contract_sign = #{subContractSign}</if>
-            <if test="customerNo != null  and customerNo != ''"> and customer_no = #{customerNo}</if>
-            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="mainContractNo != null  and mainContractNo != ''"> and c.main_contract_no = #{mainContractNo}</if>
+            <if test="mainContractName != null  and mainContractName != ''"> and c.main_contract_name like concat('%', #{mainContractName}, '%')</if>
+            <if test="subContractNo != null  and subContractNo != ''"> and c.sub_contract_no = #{subContractNo}</if>
+            <if test="subContractName != null  and subContractName != ''"> and c.sub_contract_name like concat('%', #{subContractName}, '%')</if>
+            <if test="orderId != null  and orderId != ''"> and c.order_id = #{orderId}</if>
+            <if test="mainContractSign != null  and mainContractSign != ''"> and c.main_contract_sign = #{mainContractSign}</if>
+            <if test="subContractSign != null  and subContractSign != ''"> and c.sub_contract_sign = #{subContractSign}</if>
+            <if test="customerNo != null  and customerNo != ''"> and c.customer_no = #{customerNo}</if>
+            <if test="customerName != null  and customerName != ''"> and c.customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="taskStatus != null  and taskStatus != ''"> and t.taskStatus = #{taskStatus}</if>
         </where>
     </select>
     

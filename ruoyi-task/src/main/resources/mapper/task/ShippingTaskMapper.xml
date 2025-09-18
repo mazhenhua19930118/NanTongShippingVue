@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectShippingTaskList" parameterType="ShippingTask" resultMap="ShippingTaskResult">
         <include refid="selectShippingTaskVo"/>
         <where>
-            <if test="goodsId != null "> and order_id = #{orderId}</if>
+            <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="taskStatus != null  and taskStatus != ''"> and task_status = #{taskStatus}</if>
             <if test="assignUserId != null "> and assign_user_id = #{assignUserId}</if>
         </where>
@@ -80,7 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertShippingTask" parameterType="ShippingTask" useGeneratedKeys="true" keyProperty="id">
         insert into shipping_task
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="order_id != null">orderId,</if>
+            <if test="orderId != null">order_id,</if>
             <if test="taskStatus != null">task_status,</if>
             <if test="assignUserId != null">assign_user_id,</if>
             <if test="createBy != null">create_by,</if>
@@ -89,7 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="order_id != null">#{orderId},</if>
+            <if test="orderId != null">#{orderId},</if>
             <if test="taskStatus != null">#{taskStatus},</if>
             <if test="assignUserId != null">#{assignUserId},</if>
             <if test="createBy != null">#{createBy},</if>
