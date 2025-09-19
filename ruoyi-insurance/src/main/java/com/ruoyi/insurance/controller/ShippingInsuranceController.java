@@ -2,6 +2,11 @@ package com.ruoyi.insurance.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.utils.StringUtil;
+import com.ruoyi.task.domain.ShippingTask;
+import com.ruoyi.task.service.IShippingTaskService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +38,8 @@ public class ShippingInsuranceController extends BaseController
 {
     @Autowired
     private IShippingInsuranceService shippingInsuranceService;
+    @Autowired
+    private IShippingTaskService shippingTaskService ;
 
     /**
      * 查询保险管理列表
@@ -88,7 +95,14 @@ public class ShippingInsuranceController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingInsurance shippingInsurance)
     {
-        return toAjax(shippingInsuranceService.updateShippingInsurance(shippingInsurance));
+        shippingInsuranceService.updateShippingInsurance(shippingInsurance);
+        ShippingTask shippingTask = new ShippingTask();
+        //预保险
+        if(StringUtil.isEquals("1",shippingInsurance.getInsuranceStatus())){
+            shippingTask.setTaskStatus(TaskStatus.pre_insurance.getCode());
+        }
+        shippingTaskService.generateTaskAndDetails(shippingTask);
+        return AjaxResult.success();
     }
 
     /**

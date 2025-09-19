@@ -24,6 +24,10 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-task</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-insurance</artifactId>
+        </dependency>
     </dependencies>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

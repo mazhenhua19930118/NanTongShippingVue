@@ -85,7 +85,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -99,6 +99,9 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="订单编号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入订单编号" />
+        </el-form-item>
+        <el-form-item label="保险状态" prop="insuranceStatus">
+          <el-input v-model="form.insuranceStatus" placeholder="请输入保险状态" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

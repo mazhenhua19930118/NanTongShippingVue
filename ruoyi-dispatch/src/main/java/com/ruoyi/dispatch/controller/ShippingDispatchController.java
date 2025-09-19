@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtil;
+import com.ruoyi.insurance.mapper.ShippingInsuranceMapper;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
 import com.ruoyi.task.service.IShippingTaskDetailService;
@@ -42,6 +43,8 @@ public class ShippingDispatchController extends BaseController
     private IShippingTaskService shippingTaskService;
     @Autowired
     private IShippingTaskDetailService shippingTaskDetailService;
+    @Autowired
+    private ShippingInsuranceMapper shippingInsuranceMapper;
 
     /**
      * 查询调度管理列表
@@ -133,6 +136,18 @@ public class ShippingDispatchController extends BaseController
         shippingTask.setUpdateBy(getUsername());
         //todo 生成船只使用记录
 //        this.generateRecords(shippingTask.getGoodsId());
+        //todo  有航费  无航费
+        ShippingDispatch shippingDispatch = new ShippingDispatch();
+        shippingDispatch.setOrderId(shippingTask.getOrderId());
+        List<ShippingDispatch> shippingDispatches = shippingDispatchService.selectShippingDispatchList(shippingDispatch);
+        if(CollectionUtils.isEmpty(shippingDispatches)){
+            return AjaxResult.error("数据无效请检查或者重新刷新页面！");
+        }
+        ShippingDispatch dispatch = shippingDispatches.get(0);
+        if (dispatch.getDeposit() != null || dispatch.getShippingCost() != null) {
+            //todo 总经理审批
+            return AjaxResult.success("请求成功，已提交总经理审批！");
+        }
         shippingTaskService.generateTaskAndDetails(shippingTask);
         return AjaxResult.success();
     }
