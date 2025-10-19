@@ -39,8 +39,9 @@ export function updateTask (data) {
   return request({
     url: '/documentation/task',
     method: 'post',
-    data: data
-  })
+    data: data,
+    headers: { 'Content-Type': ' multipart/form-data'}
+    })
 }
 
 // 删除【请填写功能名称】
