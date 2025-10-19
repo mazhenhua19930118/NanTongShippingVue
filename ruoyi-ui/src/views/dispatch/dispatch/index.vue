@@ -263,7 +263,7 @@ export default {
       } else {
         let data = {};
         let userId = getFieldsFromList(this.selectedCouriers, "userId")[0];
-        data.goodsId = this.goodsId;
+        data.orderId = this.orderId;
         data.assignUserId = userId;
         console.log("data", data)
         dispatchToUser(data).then(response => {

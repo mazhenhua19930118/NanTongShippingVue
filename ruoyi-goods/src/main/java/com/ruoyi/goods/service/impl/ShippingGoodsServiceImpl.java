@@ -8,6 +8,8 @@ import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.dispatch.domain.ShippingDispatch;
 import com.ruoyi.dispatch.mapper.ShippingDispatchMapper;
+import com.ruoyi.insurance.domain.ShippingInsurance;
+import com.ruoyi.insurance.mapper.ShippingInsuranceMapper;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.service.IShippingTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
     private IShippingTaskService iShippingTaskService;
     @Autowired
     private ShippingDispatchMapper shippingDispatchMapper;
+    @Autowired
+    private ShippingInsuranceMapper insuranceMapper;
 
     /**
      * 查询货源信息
@@ -111,6 +115,17 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
             shippingDispatchMapper.deleteShippingDispatchByIds(idsArray);
         }
         shippingDispatchMapper.insertShippingDispatch(shippingDispatch);
+        //生成保险管理
+
+        ShippingInsurance shippingInsurance = new ShippingInsurance();
+        shippingInsurance.setOrderId(shippingGoods.getOrderId());
+        shippingInsurance.setInsuranceStatus("0");//待预保险
+        List<ShippingInsurance> shippingInsurances = insuranceMapper.selectShippingInsuranceList(shippingInsurance);
+        if(CollectionUtils.isEmpty(shippingInsurances)){
+            shippingInsurance.setCreateTime(DateUtils.getNowDate());
+            shippingInsurance.setCreateBy(getUsername());
+            insuranceMapper.insertShippingInsurance(shippingInsurance);
+        }
         ShippingTask shippingTask = new ShippingTask();
         shippingTask.setOrderId(shippingGoods.getOrderId());
         shippingTask.setTaskStatus(TaskStatus.publish.getCode());

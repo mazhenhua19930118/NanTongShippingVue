@@ -20,11 +20,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectShippingInsuranceList" parameterType="ShippingInsurance" resultMap="ShippingInsuranceResult">
         <include refid="selectShippingInsuranceVo"/>
-        <where>  
+        <where>
             <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
             <if test="insuranceStatus != null  and insuranceStatus != ''"> and insurance_status = #{insuranceStatus}</if>
         </where>
     </select>
+
+<!--    <select id="selectShippingInsuranceList" parameterType="ShippingInsurance" resultMap="ShippingInsuranceResult">-->
+<!--        select i.* from shipping_insurance i where-->
+<!--        exists(select 1 from shipping_task t where i.order_id = t.order_id and t.task_status = '1004')-->
+<!--                    <if test="orderId != null  and orderId != ''"> and i.order_id = #{orderId}</if>-->
+<!--                    <if test="insuranceStatus != null  and insuranceStatus != ''"> and i.insurance_status = #{insuranceStatus}</if>-->
+<!--    </select>-->
+
+<!--    <select id="selectShippingInsuranceList" parameterType="ShippingInsurance" resultMap="ShippingInsuranceResult">-->
+<!--        select i.* from shipping_insurance i left join shipping_task t-->
+<!--        on i.order_id = t.order_id where  t.task_status = '1004'-->
+<!--        <if test="orderId != null  and orderId != ''"> and i.order_id = #{orderId}</if>-->
+<!--        <if test="insuranceStatus != null  and insuranceStatus != ''"> and i.insurance_status = #{insuranceStatus}</if>-->
+<!--    </select>-->
     
     <select id="selectShippingInsuranceById" parameterType="Long" resultMap="ShippingInsuranceResult">
         <include refid="selectShippingInsuranceVo"/>
