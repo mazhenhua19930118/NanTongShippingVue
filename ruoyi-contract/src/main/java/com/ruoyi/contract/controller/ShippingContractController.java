@@ -46,7 +46,7 @@ public class ShippingContractController extends BaseController
     public TableDataInfo list(ShippingContract shippingContract)
     {
         startPage();
-        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode(), TaskStatus.sign_main_contract.getCode(),TaskStatus.sign_main_contract.getCode());
+        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode(), TaskStatus.sign_main_contract.getCode(),TaskStatus.sign_sub_contract.getCode());
         shippingContract.setTaskStatusList(taskStatusList);
         List<ShippingContract> list = shippingContractService.selectShippingContractList(shippingContract);
         return getDataTable(list);

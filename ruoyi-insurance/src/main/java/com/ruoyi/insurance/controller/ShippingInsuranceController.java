@@ -1,5 +1,6 @@
 package com.ruoyi.insurance.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
@@ -49,6 +50,8 @@ public class ShippingInsuranceController extends BaseController
     public TableDataInfo list(ShippingInsurance shippingInsurance)
     {
         startPage();
+        List<String> taskStatusList = Arrays.asList(TaskStatus.dispatch.getCode(), TaskStatus.sign_sub_contract.getCode());
+        shippingInsurance.setTaskStatusList(taskStatusList);
         List<ShippingInsurance> list = shippingInsuranceService.selectShippingInsuranceList(shippingInsurance);
         return getDataTable(list);
     }
@@ -95,11 +98,25 @@ public class ShippingInsuranceController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingInsurance shippingInsurance)
     {
+        ShippingInsurance old = shippingInsuranceService.selectShippingInsuranceById(shippingInsurance.getId());
+        if(old != null){
+            if(StringUtil.isEquals(old.getInsuranceStatus(),"1") && StringUtil.isEquals(shippingInsurance.getInsuranceStatus(),"0")){
+                return AjaxResult.error("【已预保险】后不能变更为【待预保险】");
+            }
+            if(StringUtil.isEquals(old.getInsuranceStatus(),"0") && StringUtil.isEquals(shippingInsurance.getInsuranceStatus(),"2")){
+                return AjaxResult.error("【待预保险】不能直接变更为【已保险确认】！");
+            }
+            if(StringUtil.isEquals(old.getInsuranceStatus(),"2") && !StringUtil.isEquals(shippingInsurance.getInsuranceStatus(),"2")){
+                return AjaxResult.error("【已保险确认】后不能变更！");
+            }
+        }
         shippingInsuranceService.updateShippingInsurance(shippingInsurance);
         ShippingTask shippingTask = new ShippingTask();
         //预保险
         if(StringUtil.isEquals("1",shippingInsurance.getInsuranceStatus())){
             shippingTask.setTaskStatus(TaskStatus.pre_insurance.getCode());
+        }else if(StringUtil.isEquals("2",shippingInsurance.getInsuranceStatus())){
+            shippingTask.setTaskStatus(TaskStatus.insurance.getCode());
         }
         shippingTaskService.generateTaskAndDetails(shippingTask);
         return AjaxResult.success();

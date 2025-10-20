@@ -18,11 +18,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, order_id, insurance_status, create_by, create_time, update_by, update_time from shipping_insurance
     </sql>
 
+<!--    <select id="selectShippingInsuranceList" parameterType="ShippingInsurance" resultMap="ShippingInsuranceResult">-->
+<!--        <include refid="selectShippingInsuranceVo"/>-->
+<!--        <where>-->
+<!--            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>-->
+<!--            <if test="insuranceStatus != null  and insuranceStatus != ''"> and insurance_status = #{insuranceStatus}</if>-->
+<!--        </where>-->
+<!--    </select>-->
     <select id="selectShippingInsuranceList" parameterType="ShippingInsurance" resultMap="ShippingInsuranceResult">
-        <include refid="selectShippingInsuranceVo"/>
+        select * from shipping_insurance i inner join shipping_task t on i.order_id = t.order_id
         <where>
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="insuranceStatus != null  and insuranceStatus != ''"> and insurance_status = #{insuranceStatus}</if>
+            <if test="orderId != null  and orderId != ''"> and i.order_id = #{orderId}</if>
+            <if test="insuranceStatus != null  and insuranceStatus != ''"> and i.insurance_status = #{insuranceStatus}</if>
+            <if test="taskStatusList != null "> and t.task_status in <foreach item="taskStatus" collection="taskStatusList" open="(" separator="," close=")">#{taskStatus}</foreach></if>
         </where>
     </select>
 
