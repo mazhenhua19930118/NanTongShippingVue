@@ -54,6 +54,7 @@ public class ShippingDispatchController extends BaseController
     public TableDataInfo list(ShippingDispatch shippingDispatch)
     {
         startPage();
+        shippingDispatch.setTaskStatus(TaskStatus.publish.getCode());
         List<ShippingDispatch> list = shippingDispatchService.selectShippingDispatchList(shippingDispatch);
         return getDataTable(list);
     }

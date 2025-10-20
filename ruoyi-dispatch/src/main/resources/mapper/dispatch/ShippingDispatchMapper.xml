@@ -16,13 +16,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, order_id, deposit, shipping_cost, is_pre_insurance from shipping_dispatch
     </sql>
 
+<!--    <select id="selectShippingDispatchList" parameterType="ShippingDispatch" resultMap="ShippingDispatchResult">-->
+<!--        <include refid="selectShippingDispatchVo"/>-->
+<!--        <where>  -->
+<!--            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>-->
+<!--            <if test="deposit != null "> and deposit = #{deposit}</if>-->
+<!--            <if test="shippingCost != null "> and shipping_cost = #{shippingCost}</if>-->
+<!--            <if test="isPreInsurance != null  and isPreInsurance != ''"> and is_pre_insurance = #{isPreInsurance}</if>-->
+<!--        </where>-->
+<!--    </select>-->
+
     <select id="selectShippingDispatchList" parameterType="ShippingDispatch" resultMap="ShippingDispatchResult">
-        <include refid="selectShippingDispatchVo"/>
-        <where>  
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="deposit != null "> and deposit = #{deposit}</if>
-            <if test="shippingCost != null "> and shipping_cost = #{shippingCost}</if>
-            <if test="isPreInsurance != null  and isPreInsurance != ''"> and is_pre_insurance = #{isPreInsurance}</if>
+        select * from shipping_dispatch d inner join shipping_task t on d.order_id = t.order_id
+        <where>
+            <if test="orderId != null  and orderId != ''"> and t.order_id = #{orderId}</if>
+            <if test="deposit != null "> and d.deposit = #{deposit}</if>
+            <if test="shippingCost != null "> and d.shipping_cost = #{shippingCost}</if>
+            <if test="isPreInsurance != null  and isPreInsurance != ''"> and d.is_pre_insurance = #{isPreInsurance}</if>
+            <if test="taskStatus != null  and taskStatus != ''"> and t.task_status = #{taskStatus}</if>
         </where>
     </select>
     
