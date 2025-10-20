@@ -9,11 +9,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="orderId"    column="order_id"    />
         <result property="deposit"    column="deposit"    />
         <result property="shippingCost"    column="shipping_cost"    />
-        <result property="isPreInsurance"    column="is_pre_insurance"    />
+        <result property="isNeedSubSign"    column="is_need_sub_sign"    />
     </resultMap>
 
     <sql id="selectShippingDispatchVo">
-        select id, order_id, deposit, shipping_cost, is_pre_insurance from shipping_dispatch
+        select id, order_id, deposit, shipping_cost, is_need_sub_sign from shipping_dispatch
     </sql>
 
 <!--    <select id="selectShippingDispatchList" parameterType="ShippingDispatch" resultMap="ShippingDispatchResult">-->
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <!--            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>-->
 <!--            <if test="deposit != null "> and deposit = #{deposit}</if>-->
 <!--            <if test="shippingCost != null "> and shipping_cost = #{shippingCost}</if>-->
-<!--            <if test="isPreInsurance != null  and isPreInsurance != ''"> and is_pre_insurance = #{isPreInsurance}</if>-->
+<!--            <if test="isNeedSubSign != null  and isNeedSubSign != ''"> and is_need_sub_sign = #{isNeedSubSign}</if>-->
 <!--        </where>-->
 <!--    </select>-->
 
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderId != null  and orderId != ''"> and t.order_id = #{orderId}</if>
             <if test="deposit != null "> and d.deposit = #{deposit}</if>
             <if test="shippingCost != null "> and d.shipping_cost = #{shippingCost}</if>
-            <if test="isPreInsurance != null  and isPreInsurance != ''"> and d.is_pre_insurance = #{isPreInsurance}</if>
+            <if test="isNeedSubSign != null  and isNeedSubSign != ''"> and d.is_need_sub_sign = #{isNeedSubSign}</if>
             <if test="taskStatus != null  and taskStatus != ''"> and t.task_status = #{taskStatus}</if>
         </where>
     </select>
@@ -48,13 +48,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderId != null">order_id,</if>
             <if test="deposit != null">deposit,</if>
             <if test="shippingCost != null">shipping_cost,</if>
-            <if test="isPreInsurance != null">is_pre_insurance,</if>
+            <if test="isNeedSubSign != null">is_need_sub_sign,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderId != null">#{orderId},</if>
             <if test="deposit != null">#{deposit},</if>
             <if test="shippingCost != null">#{shippingCost},</if>
-            <if test="isPreInsurance != null">#{isPreInsurance},</if>
+            <if test="isNeedSubSign != null">#{isNeedSubSign},</if>
          </trim>
     </insert>
 
@@ -64,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderId != null">order_id = #{orderId},</if>
             <if test="deposit != null">deposit = #{deposit},</if>
             <if test="shippingCost != null">shipping_cost = #{shippingCost},</if>
-            <if test="isPreInsurance != null">is_pre_insurance = #{isPreInsurance},</if>
+            <if test="isNeedSubSign != null">is_need_sub_sign = #{isNeedSubSign},</if>
         </trim>
         where id = #{id}
     </update>

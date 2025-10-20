@@ -32,8 +32,8 @@ public class ShippingDispatch extends BaseEntity
     private BigDecimal shippingCost;
 
     /** 是否预保险 */
-    @Excel(name = "是否预保险")
-    private String isPreInsurance;
+    @Excel(name = "是否需要签订子合同")
+    private String isNeedSubSign;
 
     public void setId(Long id) 
     {
@@ -75,14 +75,12 @@ public class ShippingDispatch extends BaseEntity
         return shippingCost;
     }
 
-    public void setIsPreInsurance(String isPreInsurance) 
-    {
-        this.isPreInsurance = isPreInsurance;
+    public String getIsNeedSubSign() {
+        return isNeedSubSign;
     }
 
-    public String getIsPreInsurance() 
-    {
-        return isPreInsurance;
+    public void setIsNeedSubSign(String isNeedSubSign) {
+        this.isNeedSubSign = isNeedSubSign;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class ShippingDispatch extends BaseEntity
             .append("orderId", getOrderId())
             .append("deposit", getDeposit())
             .append("shippingCost", getShippingCost())
-            .append("isPreInsurance", getIsPreInsurance())
+            .append("isNeedSubSign", getIsNeedSubSign())
             .toString();
     }
 }
