@@ -57,13 +57,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="1吨 2千克" prop="weightUnit">
-        <el-input
-          v-model="queryParams.weightUnit"
-          placeholder="请输入1吨 2千克"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="重量单位" prop="weightUnit">
+        <el-select v-model="queryParams.weightUnit" placeholder="请输入重量单位">
+          <el-option
+            v-for="dict in dict.type.ship_unit"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="货物" prop="goods">
         <el-input
@@ -95,51 +97,51 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['goods:goods:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['goods:goods:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['goods:goods:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['goods:goods:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    <el-row :gutter="10" class="mb8">-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="primary"-->
+<!--          plain-->
+<!--          icon="el-icon-plus"-->
+<!--          size="mini"-->
+<!--          @click="handleAdd"-->
+<!--          v-hasPermi="['goods:goods:add']"-->
+<!--        >新增</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['goods:goods:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['goods:goods:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['goods:goods:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
+<!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
+<!--    </el-row>-->
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
@@ -151,8 +153,16 @@
       <el-table-column label="中转港" align="center" prop="transitPort" />
       <el-table-column label="目的港" align="center" prop="destinationPort" />
       <el-table-column label="重量" align="center" prop="weight" />
-      <el-table-column label="1吨 2千克" align="center" prop="weightUnit" />
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="单位" align="center" prop="weightUnit" >
+      <template slot-scope="scope">
+        <dict-tag :options="dict.type.ship_unit" :value="scope.row.weightUnit"/>
+      </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center" prop="status" >
+      <template slot-scope="scope">
+        <dict-tag :options="dict.type.ship_task_status" :value="scope.row.status"/>
+      </template>
+      </el-table-column>
       <el-table-column label="货物" align="center" prop="goods" />
       <el-table-column label="发布者" align="center" prop="publishBy" />
       <el-table-column label="发布时间" align="center" prop="publishTime" width="180">
@@ -195,7 +205,7 @@
           <el-input v-model="form.shippingUnit" placeholder="请输入托运单位" />
         </el-form-item>
         <el-form-item label="订单编号" prop="orderId">
-          <el-input v-model="form.orderId" placeholder="请输入订单编号" />
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>
         </el-form-item>
         <el-form-item label="海伦号" prop="helenNumber">
           <el-input v-model="form.helenNumber" placeholder="请输入海伦号" />
@@ -212,23 +222,30 @@
         <el-form-item label="重量" prop="weight">
           <el-input v-model="form.weight" placeholder="请输入重量" />
         </el-form-item>
-        <el-form-item label="1吨 2千克" prop="weightUnit">
-          <el-input v-model="form.weightUnit" placeholder="请输入1吨 2千克" />
+        <el-form-item label="重量单位" prop="weightUnit">
+          <el-select v-model="form.weightUnit" placeholder="请输入重量单位">
+            <el-option
+              v-for="dict in dict.type.ship_unit"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="货物" prop="goods">
           <el-input v-model="form.goods" placeholder="请输入货物" />
         </el-form-item>
-        <el-form-item label="发布者" prop="publishBy">
-          <el-input v-model="form.publishBy" placeholder="请输入发布者" />
-        </el-form-item>
-        <el-form-item label="发布时间" prop="publishTime">
-          <el-date-picker clearable
-            v-model="form.publishTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择发布时间">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="发布者" prop="publishBy">-->
+<!--          <el-input v-model="form.publishBy" placeholder="请输入发布者" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="发布时间" prop="publishTime">-->
+<!--          <el-date-picker clearable-->
+<!--            v-model="form.publishTime"-->
+<!--            type="date"-->
+<!--            value-format="yyyy-MM-dd"-->
+<!--            placeholder="请选择发布时间">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -259,23 +276,30 @@
         <el-form-item label="重量" prop="weight">
           <el-input v-model="form.weight" placeholder="请输入重量" disabled/>
         </el-form-item>
-        <el-form-item label="1吨 2千克" prop="weightUnit">
-          <el-input v-model="form.weightUnit" placeholder="请输入1吨 2千克" disabled/>
+        <el-form-item label="重量单位" prop="weightUnit">
+          <el-select v-model="form.weightUnit" placeholder="请输入重量单位" disabled>
+            <el-option
+              v-for="dict in dict.type.ship_unit"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="货物" prop="goods">
           <el-input v-model="form.goods" placeholder="请输入货物" disabled/>
         </el-form-item>
-        <el-form-item label="发布者" prop="publishBy">
-          <el-input v-model="form.publishBy" placeholder="请输入发布者" readonly/>
-        </el-form-item>
-        <el-form-item label="发布时间" prop="publishTime" disabled>
-          <el-date-picker clearable
-                          v-model="form.publishTime"
-                          type="date"
-                          value-format="yyyy-MM-dd"
-                          placeholder="请选择发布时间" disabled>
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="发布者" prop="publishBy">-->
+<!--          <el-input v-model="form.publishBy" placeholder="请输入发布者" readonly/>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="发布时间" prop="publishTime" disabled>-->
+<!--          <el-date-picker clearable-->
+<!--                          v-model="form.publishTime"-->
+<!--                          type="date"-->
+<!--                          value-format="yyyy-MM-dd"-->
+<!--                          placeholder="请选择发布时间" disabled>-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitPublishForm">发 布</el-button>
@@ -290,6 +314,7 @@ import {listGoods, getGoods, delGoods, addGoods, updateGoods, publishGoods} from
 
 export default {
   name: "Goods",
+  dicts: ['ship_task_status','ship_unit'],
   data() {
     return {
       // 遮罩层

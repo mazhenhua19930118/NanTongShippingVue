@@ -140,6 +140,42 @@ public class ShippingContractServiceImpl implements IShippingContractService
     public int updateShippingContract(ShippingContract shippingContract)
     {
         shippingContract.setUpdateTime(DateUtils.getNowDate());
+        shippingContract.setUpdateBy(getUsername());
+        ShippingGoods shippingGoods = new ShippingGoods();
+        shippingGoods.setOrderId(shippingContract.getOrderId());
+        List<ShippingGoods> goodsList = shippingGoodsMapper.selectShippingGoodsList(shippingGoods);
+        if(StringUtil.isEquals(shippingContract.getMainContractSign(), SysStatus.Yes.getCode())){
+            shippingGoods.setStatus(TaskStatus.sign_main_contract.getCode());
+        }else if(StringUtil.isEquals(shippingContract.getSubContractSign(), SysStatus.Yes.getCode())){
+            shippingGoods.setStatus(TaskStatus.sign_sub_contract.getCode());
+        }else{
+            shippingGoods.setStatus(TaskStatus.create.getCode());
+        }
+        if(CollectionUtils.isEmpty(goodsList)){
+            shippingGoods.setCreateBy(getUsername());
+            shippingGoods.setUpdateBy(getUsername());
+            shippingGoods.setCreateTime(DateUtils.getNowDate());
+            shippingGoods.setUpdateTime(DateUtils.getNowDate());
+            shippingGoodsMapper.insertShippingGoods(shippingGoods);
+        }else{
+            shippingGoods.setUpdateBy(getUsername());
+            shippingGoods.setUpdateTime(DateUtils.getNowDate());
+            shippingGoodsMapper.updateShippingGoods(shippingGoods);
+        }
+        ShippingTask shippingTask = new ShippingTask();
+        shippingTask.setOrderId(shippingContract.getOrderId());
+        shippingTask.setCreateBy(getUsername());
+        shippingTask.setAssignUserId(getUserId());
+        List<ShippingTaskDetail> shippingTaskDetails = shippingTaskDetailMapper.selectShippingTaskDetailByRelatedId(shippingTask.getOrderId());
+        if(!CollectionUtils.isEmpty(shippingTaskDetails)){
+            List<ShippingTaskDetail> shippingTaskDetailList = shippingTaskDetails.stream().filter(v -> StringUtil.isEquals(v.getTaskStatus(), TaskStatus.create.getCode())).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(shippingTaskDetailList)){
+                shippingTask.setTaskStatus(TaskStatus.create.getCode());
+                shippingTaskService.generateTaskAndDetails(shippingTask);
+            }
+        }
+        shippingTask.setTaskStatus(shippingGoods.getStatus());
+        shippingTaskService.generateTaskAndDetails(shippingTask);
         return shippingContractMapper.updateShippingContract(shippingContract);
     }
 

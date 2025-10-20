@@ -3,6 +3,8 @@ package com.ruoyi.goods.controller;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.TaskStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,7 @@ public class ShippingGoodsController extends BaseController
     public TableDataInfo list(ShippingGoods shippingGoods)
     {
         startPage();
+        shippingGoods.setStatus(TaskStatus.sign_main_contract.getCode());
         List<ShippingGoods> list = shippingGoodsService.selectShippingGoodsList(shippingGoods);
         return getDataTable(list);
     }

@@ -116,7 +116,6 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
         }
         shippingDispatchMapper.insertShippingDispatch(shippingDispatch);
         //生成保险管理
-
         ShippingInsurance shippingInsurance = new ShippingInsurance();
         shippingInsurance.setOrderId(shippingGoods.getOrderId());
         shippingInsurance.setInsuranceStatus("0");//待预保险
