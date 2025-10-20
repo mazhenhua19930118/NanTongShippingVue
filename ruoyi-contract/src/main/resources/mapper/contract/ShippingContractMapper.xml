@@ -37,7 +37,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="subContractSign != null  and subContractSign != ''"> and c.sub_contract_sign = #{subContractSign}</if>
             <if test="customerNo != null  and customerNo != ''"> and c.customer_no = #{customerNo}</if>
             <if test="customerName != null  and customerName != ''"> and c.customer_name like concat('%', #{customerName}, '%')</if>
-            <if test="taskStatus != null  and taskStatus != ''"> and t.taskStatus = #{taskStatus}</if>
+            <if test="taskStatus != null  and taskStatus != ''"> and t.task_status = #{taskStatus}</if>
+            <if test="taskStatusList != null "> and t.task_status in   <foreach item="status" collection="taskStatusList" open="(" separator="," close=")">
+                #{status}
+            </foreach></if>
         </where>
     </select>
     

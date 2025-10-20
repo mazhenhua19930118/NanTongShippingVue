@@ -1,7 +1,11 @@
 package com.ruoyi.contract.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.TaskStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +46,8 @@ public class ShippingContractController extends BaseController
     public TableDataInfo list(ShippingContract shippingContract)
     {
         startPage();
+        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode(), TaskStatus.sign_main_contract.getCode(),TaskStatus.sign_main_contract.getCode());
+        shippingContract.setTaskStatusList(taskStatusList);
         List<ShippingContract> list = shippingContractService.selectShippingContractList(shippingContract);
         return getDataTable(list);
     }

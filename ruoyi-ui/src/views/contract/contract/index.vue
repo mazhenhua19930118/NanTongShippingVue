@@ -41,20 +41,20 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="主合同是否签订 1签订 0未签订" prop="mainContractSign">
-        <el-select v-model="queryParams.mainContractSign" placeholder="请选择主合同是否签订 1签订 0未签订" clearable>
+      <el-form-item label="主合同是否签订" prop="mainContractSign">
+        <el-select v-model="queryParams.mainContractSign" placeholder="请选择主合同是否签订" clearable>
           <el-option
-            v-for="dict in dict.type.sys_yes_no"
+            v-for="dict in dict.type.ship_yes_no"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="子合同是否签订 1签订 0未签订" prop="subContractSign">
-        <el-select v-model="queryParams.subContractSign" placeholder="请选择子合同是否签订 1签订 0未签订" clearable>
+      <el-form-item label="子合同是否签订" prop="subContractSign">
+        <el-select v-model="queryParams.subContractSign" placeholder="请选择子合同是否签订" clearable>
           <el-option
-            v-for="dict in dict.type.sys_yes_no"
+            v-for="dict in dict.type.ship_yes_no"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -94,57 +94,57 @@
           v-hasPermi="['contract:contract:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['contract:contract:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['contract:contract:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['contract:contract:export']"
-        >导出</el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['contract:contract:edit']"-->
+<!--        >修改</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="danger"-->
+<!--          plain-->
+<!--          icon="el-icon-delete"-->
+<!--          size="mini"-->
+<!--          :disabled="multiple"-->
+<!--          @click="handleDelete"-->
+<!--          v-hasPermi="['contract:contract:remove']"-->
+<!--        >删除</el-button>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="warning"-->
+<!--          plain-->
+<!--          icon="el-icon-download"-->
+<!--          size="mini"-->
+<!--          @click="handleExport"-->
+<!--          v-hasPermi="['contract:contract:export']"-->
+<!--        >导出</el-button>-->
+<!--      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="contractList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="${comment}" align="center" prop="id" />
+<!--      <el-table-column label="${comment}" align="center" prop="id" />-->
       <el-table-column label="主合同编号" align="center" prop="mainContractNo" />
       <el-table-column label="主合同名称" align="center" prop="mainContractName" />
       <el-table-column label="子合同编号" align="center" prop="subContractNo" />
       <el-table-column label="子合同名称" align="center" prop="subContractName" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
-      <el-table-column label="主合同是否签订 1签订 0未签订" align="center" prop="mainContractSign">
+      <el-table-column label="主合同是否签订1" align="center" prop="mainContractSign">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.mainContractSign"/>
+          <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.mainContractSign"/>
         </template>
       </el-table-column>
-      <el-table-column label="子合同是否签订 1签订 0未签订" align="center" prop="subContractSign">
+      <el-table-column label="子合同是否签订" align="center" prop="subContractSign">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.subContractSign"/>
+          <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.subContractSign"/>
         </template>
       </el-table-column>
       <el-table-column label="客户号" align="center" prop="customerNo" />
@@ -168,7 +168,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -178,8 +178,8 @@
     />
 
     <!-- 添加或修改合同管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="主合同编号" prop="mainContractNo">
           <el-input v-model="form.mainContractNo" placeholder="请输入主合同编号" />
         </el-form-item>
@@ -193,22 +193,22 @@
           <el-input v-model="form.subContractName" placeholder="请输入子合同名称" />
         </el-form-item>
         <el-form-item label="订单编号" prop="orderId">
-          <el-input v-model="form.orderId" placeholder="请输入订单编号" />
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>
         </el-form-item>
-        <el-form-item label="主合同是否签订 1签订 0未签订" prop="mainContractSign">
-          <el-select v-model="form.mainContractSign" placeholder="请选择主合同是否签订 1签订 0未签订">
+        <el-form-item label="主合同是否签订" prop="mainContractSign">
+          <el-select v-model="form.mainContractSign" placeholder="请选择主合同是否签订" :disabled="form.mainContractSign=='1'">
             <el-option
-              v-for="dict in dict.type.sys_yes_no"
+              v-for="dict in dict.type.ship_yes_no"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="子合同是否签订 1签订 0未签订" prop="subContractSign">
-          <el-select v-model="form.subContractSign" placeholder="请选择子合同是否签订 1签订 0未签订">
+        <el-form-item label="子合同是否签订" prop="subContractSign">
+          <el-select v-model="form.subContractSign" placeholder="请选择子合同是否签订" :disabled="form.subContractSign=='1'">
             <el-option
-              v-for="dict in dict.type.sys_yes_no"
+              v-for="dict in dict.type.ship_yes_no"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
@@ -235,7 +235,7 @@ import { listContract, getContract, delContract, addContract, updateContract } f
 
 export default {
   name: "Contract",
-  dicts: ['sys_yes_no'],
+  dicts: ['ship_yes_no'],
   data() {
     return {
       // 遮罩层
