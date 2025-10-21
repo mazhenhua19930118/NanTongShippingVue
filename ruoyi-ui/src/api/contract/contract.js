@@ -9,6 +9,22 @@ export function listContract(query) {
   })
 }
 
+export function listMainContract(query) {
+  return request({
+    url: '/contract/contract/mainList',
+    method: 'get',
+    params: query
+  })
+}
+
+export function listSubContract(query) {
+  return request({
+    url: '/contract/contract/subList',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询合同管理详细
 export function getContract(id) {
   return request({
@@ -31,6 +47,22 @@ export function updateContract(data) {
   return request({
     url: '/contract/contract',
     method: 'put',
+    data: data
+  })
+}
+
+export function updateMainContract(data) {
+  return request({
+    url: '/contract/contract/mainSign',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updateSubContract(data) {
+  return request({
+    url: '/contract/contract/subSign',
+    method: 'post',
     data: data
   })
 }

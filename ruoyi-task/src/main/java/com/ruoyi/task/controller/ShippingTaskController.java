@@ -125,10 +125,10 @@ public class ShippingTaskController extends BaseController
     public AjaxResult edit(@RequestPart("data") String dataJson, @RequestParam(value = "file", required = false) MultipartFile[] files) {
         try {
             ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
-            AjaxResult ajaxResult = shippingTaskService.checkPreviousTaskNode(shippingTask);
-            if(!ajaxResult.isSuccess()){
-                return ajaxResult;
-            }
+//            AjaxResult ajaxResult = shippingTaskService.checkPreviousTaskNode(shippingTask);
+//            if(!ajaxResult.isSuccess()){
+//                return ajaxResult;
+//            }
             List<ShippingUpload> fileList = new ArrayList<>();
             if (files != null && files.length > 0) {
                 for (MultipartFile file : files) {

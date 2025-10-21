@@ -46,11 +46,32 @@ public class ShippingContractController extends BaseController
     public TableDataInfo list(ShippingContract shippingContract)
     {
         startPage();
-        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode(), TaskStatus.sign_main_contract.getCode(),TaskStatus.sign_sub_contract.getCode());
+        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode());
         shippingContract.setTaskStatusList(taskStatusList);
         List<ShippingContract> list = shippingContractService.selectShippingContractList(shippingContract);
         return getDataTable(list);
     }
+
+    @GetMapping("/mainList")
+    public TableDataInfo mainList(ShippingContract shippingContract)
+    {
+        startPage();
+        List<String> taskStatusList = Arrays.asList(TaskStatus.create.getCode());
+        shippingContract.setTaskStatusList(taskStatusList);
+        List<ShippingContract> list = shippingContractService.selectShippingContractList(shippingContract);
+        return getDataTable(list);
+    }
+
+    @GetMapping("/subList")
+    public TableDataInfo subList(ShippingContract shippingContract)
+    {
+        startPage();
+        List<String> taskStatusList = Arrays.asList(TaskStatus.wait_sign_sub_contract.getCode());
+        shippingContract.setTaskStatusList(taskStatusList);
+        List<ShippingContract> list = shippingContractService.selectShippingContractList(shippingContract);
+        return getDataTable(list);
+    }
+
 
     /**
      * 导出合同管理列表
@@ -95,6 +116,20 @@ public class ShippingContractController extends BaseController
     public AjaxResult edit(@RequestBody ShippingContract shippingContract)
     {
         return toAjax(shippingContractService.updateShippingContract(shippingContract));
+    }
+
+    @Log(title = "主合同管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/mainSign")
+    public AjaxResult mainSign(@RequestBody ShippingContract shippingContract)
+    {
+        return shippingContractService.mainSign(shippingContract);
+    }
+
+    @Log(title = "子合同管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/subSign")
+    public AjaxResult subSign(@RequestBody ShippingContract shippingContract)
+    {
+        return shippingContractService.subSign(shippingContract);
     }
 
     /**

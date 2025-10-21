@@ -44,6 +44,8 @@ public interface IShippingContractService
      * @return 结果
      */
     public int updateShippingContract(ShippingContract shippingContract);
+    public AjaxResult mainSign(ShippingContract shippingContract);
+    public AjaxResult subSign(ShippingContract shippingContract);
 
     /**
      * 批量删除合同管理

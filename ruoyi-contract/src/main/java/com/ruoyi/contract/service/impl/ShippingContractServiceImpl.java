@@ -33,7 +33,7 @@ import static com.ruoyi.common.utils.SecurityUtils.getUsername;
  * @date 2025-08-19
  */
 @Service
-public class ShippingContractServiceImpl implements IShippingContractService 
+public class ShippingContractServiceImpl implements IShippingContractService
 {
     @Autowired
     private ShippingContractMapper shippingContractMapper;
@@ -201,5 +201,63 @@ public class ShippingContractServiceImpl implements IShippingContractService
     public int deleteShippingContractById(Long id)
     {
         return shippingContractMapper.deleteShippingContractById(id);
+    }
+
+    public AjaxResult mainSign(ShippingContract shippingContract){
+        shippingContract.setUpdateTime(DateUtils.getNowDate());
+        shippingContract.setUpdateBy(getUsername());
+        ShippingGoods shippingGoods = new ShippingGoods();
+        shippingGoods.setOrderId(shippingContract.getOrderId());
+        if(StringUtil.isEquals(shippingContract.getMainContractSign(), SysStatus.Yes.getCode())){
+            shippingGoods.setStatus(TaskStatus.sign_main_contract.getCode());
+        }else{
+            return AjaxResult.success();
+        }
+        shippingGoodsMapper.updateShippingGoods(shippingGoods);
+        ShippingTask shippingTask = new ShippingTask();
+        shippingTask.setOrderId(shippingContract.getOrderId());
+        shippingTask.setCreateBy(getUsername());
+        shippingTask.setAssignUserId(getUserId());
+        List<ShippingTaskDetail> shippingTaskDetails = shippingTaskDetailMapper.selectShippingTaskDetailByRelatedId(shippingTask.getOrderId());
+        if(!CollectionUtils.isEmpty(shippingTaskDetails)){
+            List<ShippingTaskDetail> shippingTaskDetailList = shippingTaskDetails.stream().filter(v -> StringUtil.isEquals(v.getTaskStatus(), TaskStatus.create.getCode())).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(shippingTaskDetailList)){
+                shippingTask.setTaskStatus(TaskStatus.create.getCode());
+                shippingTaskService.generateTaskAndDetails(shippingTask);
+            }
+        }
+        shippingTask.setTaskStatus(shippingGoods.getStatus());
+        shippingTaskService.generateTaskAndDetails(shippingTask);
+        shippingContractMapper.updateShippingContract(shippingContract);
+        return AjaxResult.success("操作成功");
+    }
+
+    public AjaxResult subSign(ShippingContract shippingContract){
+        shippingContract.setUpdateTime(DateUtils.getNowDate());
+        shippingContract.setUpdateBy(getUsername());
+        ShippingGoods shippingGoods = new ShippingGoods();
+        shippingGoods.setOrderId(shippingContract.getOrderId());
+        if(StringUtil.isEquals(shippingContract.getMainContractSign(), SysStatus.Yes.getCode())){
+            shippingGoods.setStatus(TaskStatus.sign_sub_contract.getCode());
+        }else{
+            return AjaxResult.success();
+        }
+        shippingGoodsMapper.updateShippingGoods(shippingGoods);
+        ShippingTask shippingTask = new ShippingTask();
+        shippingTask.setOrderId(shippingContract.getOrderId());
+        shippingTask.setCreateBy(getUsername());
+        shippingTask.setAssignUserId(getUserId());
+        List<ShippingTaskDetail> shippingTaskDetails = shippingTaskDetailMapper.selectShippingTaskDetailByRelatedId(shippingTask.getOrderId());
+        if(!CollectionUtils.isEmpty(shippingTaskDetails)){
+            List<ShippingTaskDetail> shippingTaskDetailList = shippingTaskDetails.stream().filter(v -> StringUtil.isEquals(v.getTaskStatus(), TaskStatus.create.getCode())).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(shippingTaskDetailList)){
+                shippingTask.setTaskStatus(TaskStatus.create.getCode());
+                shippingTaskService.generateTaskAndDetails(shippingTask);
+            }
+        }
+        shippingTask.setTaskStatus(shippingGoods.getStatus());
+        shippingTaskService.generateTaskAndDetails(shippingTask);
+        shippingContractMapper.updateShippingContract(shippingContract);
+        return AjaxResult.success("操作成功");
     }
 }
