@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.approve.domain.ShippingApprove;
+import com.ruoyi.approve.mapper.ShippingApproveMapper;
+import com.ruoyi.common.enums.ApproveReason;
+import com.ruoyi.common.enums.ApproveStatus;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtil;
@@ -45,6 +49,8 @@ public class ShippingDispatchController extends BaseController
     private IShippingTaskDetailService shippingTaskDetailService;
     @Autowired
     private ShippingInsuranceMapper shippingInsuranceMapper;
+    @Autowired
+    private ShippingApproveMapper shippingApproveMapper;
 
     /**
      * 查询调度管理列表
@@ -146,8 +152,30 @@ public class ShippingDispatchController extends BaseController
         }
         ShippingDispatch dispatch = shippingDispatches.get(0);
         if (dispatch.getDeposit() != null || dispatch.getShippingCost() != null) {
-            //todo 总经理审批
-            return AjaxResult.success("请求成功，已提交总经理审批！");
+            ShippingApprove shippingApprove = new ShippingApprove();
+            shippingApprove.setOrderId(shippingTask.getOrderId());
+            List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
+            if (CollectionUtils.isEmpty(shippingApproves)) {
+                if (dispatch.getDeposit() != null) {
+                    shippingApprove.setApplicantReason(ApproveReason.deposit.getDesc());
+                } else if (dispatch.getShippingCost() != null) {
+                    shippingApprove.setApplicantReason(ApproveReason.shippingCost.getDesc());
+                } else {
+                    shippingApprove.setApplicantReason(ApproveReason.deposit_shippingCost.getDesc());
+                }
+                shippingApprove.setApplicantUser(getUsername());
+                shippingApprove.setApplicantTime(DateUtils.getNowDate());
+                shippingApproveMapper.insertShippingApprove(shippingApprove);
+                return AjaxResult.success("请求成功，已提交总经理审批！");
+            } else {
+                ShippingApprove exist = shippingApproves.get(0);
+                if (StringUtil.isEmpty(exist.getApproveStatus())) {
+                    return AjaxResult.error("正在审批中，请耐心等待！");
+                }
+                if (StringUtil.isEquals(exist.getApproveStatus(), ApproveStatus.NO.getCode())) {
+                    return AjaxResult.error("审批不通过！");
+                }
+            }
         }
         shippingTaskService.generateTaskAndDetails(shippingTask);
         return AjaxResult.success();

@@ -100,13 +100,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-edit"-->
-<!--            @click="handleUpdate(scope.row)"-->
-<!--            v-hasPermi="['dispatch:dispatch:edit']"-->
-<!--          >修改</el-button>-->
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['dispatch:dispatch:edit']"
+          >修改</el-button>
 <!--          <el-button-->
 <!--            size="mini"-->
 <!--            type="text"-->
@@ -268,7 +268,7 @@ export default {
         console.log("data", data)
         dispatchToUser(data).then(response => {
           if (response.code === 200) {
-            this.$modal.msgSuccess("操作成功");
+            this.$modal.msgSuccess(response.msg||"操作成功");
             this.getList();
           } else {
             this.$modal.msgError(response.msg);

@@ -33,6 +33,12 @@ public class StringUtil {
         return !flag;
     }
 
+    public static boolean isEmpty(String str) {
+        boolean flag = str == null || str.trim().isEmpty() || isEquals(NULL, str);
+        return flag;
+    }
+
+
 
     /**
      * 将 long 类型转换为字符串
