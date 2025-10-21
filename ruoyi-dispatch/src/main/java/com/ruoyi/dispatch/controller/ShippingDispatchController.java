@@ -12,6 +12,7 @@ import com.ruoyi.common.enums.ApproveStatus;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtil;
+import com.ruoyi.insurance.domain.ShippingInsurance;
 import com.ruoyi.insurance.mapper.ShippingInsuranceMapper;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
@@ -138,6 +139,14 @@ public class ShippingDispatchController extends BaseController
         }
         if(StringUtil.isEquals(queryList.get(0).getTaskStatus(),TaskStatus.termination.getCode())){
             return AjaxResult.error("本单任务已经终止，不能派单！");
+        }
+        ShippingInsurance shippingInsurance = new ShippingInsurance();
+        shippingInsurance.setOrderId(shippingTask.getOrderId());
+        List<ShippingInsurance> shippingInsurances = shippingInsuranceMapper.selectShippingInsuranceList(shippingInsurance);
+        if(CollectionUtils.isEmpty(shippingInsurances)){
+            shippingInsurance.setCreateTime(DateUtils.getNowDate());
+            shippingInsurance.setCreateBy(getUsername());
+            shippingInsuranceMapper.insertShippingInsurance(shippingInsurance);
         }
         shippingTask.setCreateBy(getUsername());
         shippingTask.setUpdateBy(getUsername());

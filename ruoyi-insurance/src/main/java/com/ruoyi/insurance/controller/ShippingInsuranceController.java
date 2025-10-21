@@ -50,7 +50,7 @@ public class ShippingInsuranceController extends BaseController
     public TableDataInfo list(ShippingInsurance shippingInsurance)
     {
         startPage();
-        List<String> taskStatusList = Arrays.asList(TaskStatus.dispatch.getCode(), TaskStatus.sign_sub_contract.getCode());
+        List<String> taskStatusList = Arrays.asList(TaskStatus.wait_pre_insurance.getCode());
         shippingInsurance.setTaskStatusList(taskStatusList);
         List<ShippingInsurance> list = shippingInsuranceService.selectShippingInsuranceList(shippingInsurance);
         return getDataTable(list);
