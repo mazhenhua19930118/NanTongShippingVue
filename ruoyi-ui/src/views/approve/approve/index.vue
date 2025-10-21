@@ -150,7 +150,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['approve:approve:edit']"
-          >修改</el-button>
+          >审批</el-button>
           <el-button
             size="mini"
             type="text"
@@ -174,36 +174,36 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="订单编号" prop="orderId">
-          <el-input v-model="form.orderId" placeholder="请输入订单编号" />
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>
         </el-form-item>
         <el-form-item label="申请人" prop="applicantUser">
-          <el-input v-model="form.applicantUser" placeholder="请输入申请人" />
+          <el-input v-model="form.applicantUser" placeholder="请输入申请人" disabled/>
         </el-form-item>
         <el-form-item label="申请时间" prop="applicantTime">
           <el-date-picker clearable
             v-model="form.applicantTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择申请时间">
+            placeholder="请选择申请时间" disabled>
           </el-date-picker>
         </el-form-item>
         <el-form-item label="申请原因" prop="applicantReason">
-          <el-input v-model="form.applicantReason" placeholder="请输入申请原因" />
+          <el-input v-model="form.applicantReason" placeholder="请输入申请原因" disabled/>
         </el-form-item>
         <el-form-item label="审批原因" prop="approveReason">
           <el-input v-model="form.approveReason" placeholder="请输入审批原因" />
         </el-form-item>
-        <el-form-item label="审批人" prop="approveUser">
-          <el-input v-model="form.approveUser" placeholder="请输入审批人" />
-        </el-form-item>
-        <el-form-item label="审批时间" prop="approveTime">
-          <el-date-picker clearable
-            v-model="form.approveTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择审批时间">
-          </el-date-picker>
-        </el-form-item>
+<!--        <el-form-item label="审批人" prop="approveUser">-->
+<!--          <el-input v-model="form.approveUser" placeholder="请输入审批人" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="审批时间" prop="approveTime">-->
+<!--          <el-date-picker clearable-->
+<!--            v-model="form.approveTime"-->
+<!--            type="date"-->
+<!--            value-format="yyyy-MM-dd"-->
+<!--            placeholder="请选择审批时间">-->
+<!--          </el-date-picker>-->
+<!--        </el-form-item>-->
         <el-form-item label="审批状态" prop="approveStatus">
         <el-select v-model="form.approveStatus" placeholder="请选择审批状态" clearable>
           <el-option

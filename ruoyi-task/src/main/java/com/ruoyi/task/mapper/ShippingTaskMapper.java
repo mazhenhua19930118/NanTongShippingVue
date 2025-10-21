@@ -23,7 +23,7 @@ public interface ShippingTaskMapper
      */
     public ShippingTask selectShippingTaskById(Long id);
 
-    public ShippingTask selectShippingTaskByRelatedId(String goods_id);
+    public ShippingTask selectShippingTaskByRelatedId(String orderId);
 
     /**
      * 查询【请填写功能名称】列表

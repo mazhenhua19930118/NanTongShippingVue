@@ -1,6 +1,8 @@
 package com.ruoyi.approve.mapper;
 
 import java.util.List;
+
+import com.ruoyi.approve.domain.Dispatch;
 import com.ruoyi.approve.domain.ShippingApprove;
 
 /**
@@ -58,4 +60,6 @@ public interface ShippingApproveMapper
      * @return 结果
      */
     public int deleteShippingApproveByIds(Long[] ids);
+
+    public Dispatch selectShippingDispatch(String orderId);
 }

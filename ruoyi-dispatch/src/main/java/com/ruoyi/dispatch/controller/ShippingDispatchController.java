@@ -143,7 +143,6 @@ public class ShippingDispatchController extends BaseController
         shippingTask.setUpdateBy(getUsername());
         //todo 生成船只使用记录
 //        this.generateRecords(shippingTask.getGoodsId());
-        //todo  有航费  无航费
         ShippingDispatch shippingDispatch = new ShippingDispatch();
         shippingDispatch.setOrderId(shippingTask.getOrderId());
         List<ShippingDispatch> shippingDispatches = shippingDispatchService.selectShippingDispatchList(shippingDispatch);
@@ -166,6 +165,15 @@ public class ShippingDispatchController extends BaseController
                 shippingApprove.setApplicantUser(getUsername());
                 shippingApprove.setApplicantTime(DateUtils.getNowDate());
                 shippingApproveMapper.insertShippingApprove(shippingApprove);
+//                //生成任务
+//                if (dispatch.getDeposit() != null && dispatch.getShippingCost() != null) {
+//                    shippingTask.setTaskStatus(TaskStatus.shipping_fee_deposit_paid.getCode());
+//                    shippingTaskService.generateTaskAndDetails(shippingTask);
+//                } else if (dispatch.getDeposit() != null) {
+//                    shippingTask.setTaskStatus(TaskStatus.deposit_paid.getCode());
+//                } else if (dispatch.getShippingCost() != null) {
+//                    shippingTask.setTaskStatus(TaskStatus.shipping_fee_paid.getCode());
+//                }
                 return AjaxResult.success("请求成功，已提交总经理审批！");
             } else {
                 ShippingApprove exist = shippingApproves.get(0);
@@ -178,6 +186,12 @@ public class ShippingDispatchController extends BaseController
             }
         }
         shippingTaskService.generateTaskAndDetails(shippingTask);
+        if(StringUtil.isEquals(dispatch.getIsNeedSubSign(), "1")){
+            shippingTask.setTaskStatus(TaskStatus.wait_sign_sub_contract.getCode());
+        }else{
+            shippingTask.setTaskStatus(TaskStatus.wait_pre_insurance.getCode());
+        }
+        shippingTaskService.updateShippingTask(shippingTask);
         return AjaxResult.success();
     }
 

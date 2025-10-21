@@ -88,7 +88,7 @@ public class ShippingApproveController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingApprove shippingApprove)
     {
-        return toAjax(shippingApproveService.updateShippingApprove(shippingApprove));
+        return  shippingApproveService.updateShippingApprove(shippingApprove);
     }
 
     /**

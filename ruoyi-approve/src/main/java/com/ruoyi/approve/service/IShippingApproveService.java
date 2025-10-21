@@ -2,6 +2,7 @@ package com.ruoyi.approve.service;
 
 import java.util.List;
 import com.ruoyi.approve.domain.ShippingApprove;
+import com.ruoyi.common.core.domain.AjaxResult;
 
 /**
  * 审批Service接口
@@ -41,7 +42,7 @@ public interface IShippingApproveService
      * @param shippingApprove 审批
      * @return 结果
      */
-    public int updateShippingApprove(ShippingApprove shippingApprove);
+    public AjaxResult updateShippingApprove(ShippingApprove shippingApprove);
 
     /**
      * 批量删除审批
