@@ -89,6 +89,10 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-finance</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-approve</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

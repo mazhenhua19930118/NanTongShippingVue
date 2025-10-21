@@ -252,6 +252,11 @@
                 <artifactId>ruoyi-finance</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-approve</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -269,6 +274,7 @@
         <module>ruoyi-insurance</module>
         <module>ruoyi-dispatch</module>
         <module>ruoyi-finance</module>
+        <module>ruoyi-approve</module>
 
     </modules>
     <packaging>pom</packaging>

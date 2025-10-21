@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.approve.mapper.ShippingApproveMapper">
+    
+    <resultMap type="ShippingApprove" id="ShippingApproveResult">
+        <result property="id"    column="id"    />
+        <result property="orderId"    column="order_id"    />
+        <result property="applicantUser"    column="applicant_user"    />
+        <result property="applicantTime"    column="applicant_time"    />
+        <result property="applicantReason"    column="applicant_reason"    />
+        <result property="approveReason"    column="approve_reason"    />
+        <result property="approveUser"    column="approve_user"    />
+        <result property="approveTime"    column="approve_time"    />
+        <result property="approveStatus"    column="approve_status"    />
+    </resultMap>
+
+    <sql id="selectShippingApproveVo">
+        select id, order_id, applicant_user, applicant_time, applicant_reason, approve_reason, approve_user, approve_time, approve_status from shipping_approve
+    </sql>
+
+    <select id="selectShippingApproveList" parameterType="ShippingApprove" resultMap="ShippingApproveResult">
+        <include refid="selectShippingApproveVo"/>
+        <where>  
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
+            <if test="applicantUser != null  and applicantUser != ''"> and applicant_user = #{applicantUser}</if>
+            <if test="applicantTime != null "> and applicant_time = #{applicantTime}</if>
+            <if test="applicantReason != null  and applicantReason != ''"> and applicant_reason = #{applicantReason}</if>
+            <if test="approveReason != null  and approveReason != ''"> and approve_reason = #{approveReason}</if>
+            <if test="approveUser != null  and approveUser != ''"> and approve_user = #{approveUser}</if>
+            <if test="approveTime != null "> and approve_time = #{approveTime}</if>
+            <if test="approveStatus != null  and approveStatus != ''"> and approve_status = #{approveStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectShippingApproveById" parameterType="Long" resultMap="ShippingApproveResult">
+        <include refid="selectShippingApproveVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertShippingApprove" parameterType="ShippingApprove" useGeneratedKeys="true" keyProperty="id">
+        insert into shipping_approve
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">order_id,</if>
+            <if test="applicantUser != null">applicant_user,</if>
+            <if test="applicantTime != null">applicant_time,</if>
+            <if test="applicantReason != null">applicant_reason,</if>
+            <if test="approveReason != null">approve_reason,</if>
+            <if test="approveUser != null">approve_user,</if>
+            <if test="approveTime != null">approve_time,</if>
+            <if test="approveStatus != null">approve_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="applicantUser != null">#{applicantUser},</if>
+            <if test="applicantTime != null">#{applicantTime},</if>
+            <if test="applicantReason != null">#{applicantReason},</if>
+            <if test="approveReason != null">#{approveReason},</if>
+            <if test="approveUser != null">#{approveUser},</if>
+            <if test="approveTime != null">#{approveTime},</if>
+            <if test="approveStatus != null">#{approveStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateShippingApprove" parameterType="ShippingApprove">
+        update shipping_approve
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="applicantUser != null">applicant_user = #{applicantUser},</if>
+            <if test="applicantTime != null">applicant_time = #{applicantTime},</if>
+            <if test="applicantReason != null">applicant_reason = #{applicantReason},</if>
+            <if test="approveReason != null">approve_reason = #{approveReason},</if>
+            <if test="approveUser != null">approve_user = #{approveUser},</if>
+            <if test="approveTime != null">approve_time = #{approveTime},</if>
+            <if test="approveStatus != null">approve_status = #{approveStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteShippingApproveById" parameterType="Long">
+        delete from shipping_approve where id = #{id}
+    </delete>
+
+    <delete id="deleteShippingApproveByIds" parameterType="String">
+        delete from shipping_approve where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
