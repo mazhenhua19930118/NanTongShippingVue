@@ -75,6 +75,22 @@ public class ShippingTaskController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/unload/list")
+    public TableDataInfo unloadList(ShippingTask shippingTask)
+    {
+        startPage();
+        shippingTask.setTaskStatus(TaskStatus.wait_unloaded.getCode());
+        List<ShippingTask> list = shippingTaskService.selectShippingTaskList(shippingTask);
+        for(ShippingTask task :list){
+            if(task.getAssignUserId()!=null){
+                SysUser sysUser = userService.selectUserById(task.getAssignUserId());
+                task.setAssignUserName(sysUser.getUserName());
+                task.setAssignUserNickName(sysUser.getNickName());
+            }
+        }
+        return getDataTable(list);
+    }
+
     /**
      * 导出
      */
@@ -129,6 +145,49 @@ public class ShippingTaskController extends BaseController
 //            if(!ajaxResult.isSuccess()){
 //                return ajaxResult;
 //            }
+            List<ShippingUpload> fileList = new ArrayList<>();
+            if (files != null && files.length > 0) {
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        // 保存文件到指定目录
+                        ShippingUpload shippingUpload = new ShippingUpload();
+                        shippingUpload.setOriginFileName(file.getOriginalFilename());
+                        shippingUpload.setRelatedId(shippingTask.getOrderId());
+                        shippingUpload.setFileType(FileType.IMG.getCode());
+                        shippingUpload.setCreateBy(getUsername());
+                        shippingUpload.setUploadType(shippingTask.getTaskStatus());
+                        String filePath = FileUploadUtils.uploadNew(Constants.SHIPPING_RESOURCE_PREFIX, file, MimeTypeUtils.IMAGE_EXTENSION);
+                        int lastSlashIndex = filePath.lastIndexOf('/');
+                        // 提取文件名（包括后缀）
+                        if (lastSlashIndex != -1) {
+                            String fileName = filePath.substring(lastSlashIndex + 1);
+                            shippingUpload.setFileName(fileName);
+                        }
+                        shippingUpload.setFilePath(filePath);
+                        fileList.add(shippingUpload);
+                    }
+                }
+            }
+            for (ShippingUpload shippingUpload : fileList) {
+                List<ShippingUpload> shippingUploads = iShippingUploadService.selectShippingUploadList(shippingUpload);
+                if(CollectionUtils.isEmpty(shippingUploads)){
+                    iShippingUploadService.insertShippingUpload(shippingUpload);
+                }
+            }
+            shippingTask.setCurrentUserId(getUserId());
+            shippingTaskService.generateTaskAndDetails(shippingTask);
+            return toAjax(1);
+        } catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
+    }
+
+    @Log(title = "【修改】", businessType = BusinessType.UPDATE)
+    @PostMapping(path = "/unload",consumes = "multipart/form-data")
+    public AjaxResult unload(@RequestPart("data") String dataJson, @RequestParam(value = "file", required = false) MultipartFile[] files) {
+        try {
+            ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
+            shippingTask.setTaskStatus(TaskStatus.unloaded.getCode());
             List<ShippingUpload> fileList = new ArrayList<>();
             if (files != null && files.length > 0) {
                 for (MultipartFile file : files) {

@@ -116,6 +116,9 @@
       <el-table-column label="当前负责人员姓名"
                        align="center"
                        prop="assignUserName" />
+      <el-table-column label="摄像头说明"
+                       align="center"
+                       prop="cameraInstructions" />
       <el-table-column label="操作"
                        align="center"
                        class-name="small-padding fixed-width">
@@ -164,6 +167,11 @@
             <el-option label="已装货"
                        :value='StatusEnum.loading.value'></el-option>
           </el-select>
+        </el-form-item>
+        <el-form-item label="摄像头说明"
+                      prop="cameraInstructions">
+          <el-input v-model="form.cameraInstructions"
+                    placeholder="请输入摄像头说明" />
         </el-form-item>
         <!--        <el-form-item label="分配人员id" prop="assignUserId">-->
         <!--          <el-input v-model="form.assignUserId" placeholder="请输入分配人员id" />-->

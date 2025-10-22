@@ -148,12 +148,14 @@ public class ShippingTaskServiceImpl implements IShippingTaskService
             if(shippingTask.getCurrentUserId()==null){
                 shippingTask.setCurrentUserId(SecurityUtils.getUserId());
             }
+            shippingTaskDetail.setCameraInstructions(shippingTask.getCameraInstructions());
             shippingTaskDetail.setCreator(shippingTask.getCurrentUserId());
             shippingTaskDetailMapper.insertShippingTaskDetail(shippingTaskDetail);
         }else{
             shippingTaskDetail.setId(shippingTaskDetailList.get(0).getId());
             shippingTaskDetail.setUpdateTime(DateUtils.getNowDate());
             shippingTaskDetail.setDirector(shippingTask.getAssignUserId());
+            shippingTaskDetail.setCameraInstructions(shippingTask.getCameraInstructions());
             shippingTaskDetailMapper.updateShippingTaskDetail(shippingTaskDetail);
         }
     }

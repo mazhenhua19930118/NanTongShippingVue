@@ -43,6 +43,15 @@ public class ShippingTaskDetail extends BaseEntity
 
     /** 描述 */
     private String desc;
+    private String cameraInstructions;//摄像头说明
+
+    public String getCameraInstructions() {
+        return cameraInstructions;
+    }
+
+    public void setCameraInstructions(String cameraInstructions) {
+        this.cameraInstructions = cameraInstructions;
+    }
 
     public Long getCreator() {
         return creator;

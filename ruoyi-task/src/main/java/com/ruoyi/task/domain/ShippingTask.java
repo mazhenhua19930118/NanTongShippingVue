@@ -49,6 +49,16 @@ public class ShippingTask extends BaseEntity
     @JsonProperty("isTermination")
     private Boolean isTermination ;
 
+    private String cameraInstructions;
+
+    public String getCameraInstructions() {
+        return cameraInstructions;
+    }
+
+    public void setCameraInstructions(String cameraInstructions) {
+        this.cameraInstructions = cameraInstructions;
+    }
+
     public Boolean getTermination() {
         return isTermination;
     }

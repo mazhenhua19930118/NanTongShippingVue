@@ -9,6 +9,14 @@ export function listTask (query) {
   })
 }
 
+export function listUnloadTask (query) {
+  return request({
+    url: '/documentation/task/unload/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function listInternalTask (query) {
   return request({
     url: '/documentation/task/internal/list',
@@ -42,6 +50,15 @@ export function updateTask (data) {
     data: data,
     headers: { 'Content-Type': ' multipart/form-data'}
     })
+}
+
+export function updateUnloadTask (data) {
+  return request({
+    url: '/documentation/task/unload',
+    method: 'post',
+    data: data,
+    headers: { 'Content-Type': ' multipart/form-data'}
+  })
 }
 
 // 删除【请填写功能名称】

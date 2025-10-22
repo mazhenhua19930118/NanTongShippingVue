@@ -13,10 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="creator"    column="creator"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="cameraInstructions"    column="camera_instructions"    />
     </resultMap>
 
     <sql id="selectShippingTaskDetailVo">
-        select id, order_id, task_status, director,task_id, create_time, update_time,creator from shipping_task_detail
+        select id, order_id, task_status, director,task_id, create_time, update_time,creator ,camera_instructionsfrom shipping_task_detail
     </sql>
 
     <select id="selectShippingTaskDetailList" parameterType="ShippingTaskDetail" resultMap="ShippingTaskDetailResult">
@@ -27,6 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="director != null "> and director = #{director}</if>
             <if test="creator != null "> and creator = #{creator}</if>
             <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="cameraInstructions != null "> and camera_instructions = #{cameraInstructions}</if>
         </where>
     </select>
     
@@ -55,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="creator != null">creator,</if>
+            <if test="cameraInstructions != null">camera_instructions,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderId != null">#{orderId},</if>
@@ -64,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="creator != null">#{creator},</if>
+            <if test="cameraInstructions != null">#{cameraInstructions},</if>
          </trim>
     </insert>
 
@@ -77,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="creator != null">creator = #{creator},</if>
+            <if test="cameraInstructions != null">camera_instructions = #{cameraInstructions},</if>
         </trim>
         where id = #{id}
     </update>
