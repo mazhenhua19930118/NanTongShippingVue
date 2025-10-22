@@ -102,10 +102,15 @@ public class ShippingApproveServiceImpl implements IShippingApproveService
                         shippingTaskService.generateTaskAndDetails(shippingTask);
                     }
                 }
+                shippingTaskService.generateTaskAndDetails(shippingTask);
+                shippingTask.setTaskStatus(TaskStatus.wait_pre_insurance.getCode());
+                shippingTaskService.updateShippingTask(shippingTask);
+            }else if(StringUtil.isEquals(shippingTask.getTaskStatus(), TaskStatus.special_handling_for_unloading.getCode())){
+                shippingTaskService.generateTaskAndDetails(shippingTask);
+                shippingTask.setTaskStatus(TaskStatus.wait_unloaded.getCode());
+                shippingTaskService.updateShippingTask(shippingTask);
             }
-            shippingTaskService.generateTaskAndDetails(shippingTask);
-            shippingTask.setTaskStatus(TaskStatus.wait_pre_insurance.getCode());
-            shippingTaskService.updateShippingTask(shippingTask);
+
         }
         shippingApproveMapper.updateShippingApprove(shippingApprove);
 
