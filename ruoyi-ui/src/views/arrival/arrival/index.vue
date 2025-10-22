@@ -108,11 +108,11 @@
           <span>{{ parseTime(scope.row.arrivalTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-form-item label="特殊场景类型" prop="specialCases">
+      <el-table-column label="特殊场景类型" prop="specialCases">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.special_cases" :value="scope.row.specialCases"/>
         </template>
-      </el-form-item>
+      </el-table-column>
 <!--      <el-form-item label="特殊原因" prop="specialCaseReason">-->
 <!--        <el-input v-model="form.specialCaseReason" placeholder="请输入特殊原因" />-->
 <!--      </el-form-item>-->

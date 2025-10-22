@@ -51,10 +51,19 @@ public class ShippingGoodsController extends BaseController
     }
 
     @GetMapping("/arrival/list")
-    public TableDataInfo ArrviaList(ShippingGoods shippingGoods)
+    public TableDataInfo arrviaList(ShippingGoods shippingGoods)
     {
         startPage();
         shippingGoods.setStatus(TaskStatus.insurance.getCode());
+        List<ShippingGoods> list = shippingGoodsService.selectShippingGoodsList(shippingGoods);
+        return getDataTable(list);
+    }
+
+    @GetMapping("/special/list")
+    public TableDataInfo specialList(ShippingGoods shippingGoods)
+    {
+        startPage();
+        shippingGoods.setStatus(TaskStatus.special_handling_for_unloading.getCode());
         List<ShippingGoods> list = shippingGoodsService.selectShippingGoodsList(shippingGoods);
         return getDataTable(list);
     }
@@ -110,6 +119,14 @@ public class ShippingGoodsController extends BaseController
     {
         return shippingGoodsService.arrivalEdit(shippingGoods);
     }
+
+    @Log(title = "特殊情况处理信息", businessType = BusinessType.UPDATE)
+    @PostMapping("specialEdit")
+    public AjaxResult specialEdit(@RequestBody ShippingGoods shippingGoods)
+    {
+        return shippingGoodsService.specialEdit(shippingGoods);
+    }
+
 
 
     /**

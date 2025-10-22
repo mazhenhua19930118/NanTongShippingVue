@@ -3,6 +3,8 @@ package com.ruoyi.goods.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ruoyi.approve.domain.ShippingApprove;
+import com.ruoyi.approve.mapper.ShippingApproveMapper;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
@@ -40,6 +42,8 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
     private ShippingDispatchMapper shippingDispatchMapper;
     @Autowired
     private ShippingInsuranceMapper insuranceMapper;
+    @Autowired
+    private ShippingApproveMapper shippingApproveMapper;
 
     /**
      * 查询货源信息
@@ -149,6 +153,7 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
            ShippingGoods good = new ShippingGoods();
            good.setId(shippingGoods.getId());
            good.setStatus(TaskStatus.special_handling_for_unloading.getCode());
+           good.setSpecialCases(shippingGoods.getSpecialCases());
            shippingGoodsMapper.updateShippingGoods(good);
        }else{
            ShippingTask shippingTask = new ShippingTask();
@@ -158,9 +163,36 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
            ShippingGoods good = new ShippingGoods();
            good.setId(shippingGoods.getId());
            good.setStatus(TaskStatus.arrived_at_port.getCode());
+           good.setSpecialCases(shippingGoods.getSpecialCases());
            shippingGoodsMapper.updateShippingGoods(good);
        }
        return AjaxResult.success();
+    }
+
+    public AjaxResult specialEdit(ShippingGoods shippingGoods)
+    {
+        if (StringUtil.isEmpty(shippingGoods.getSpecialCaseReason())) {
+            return AjaxResult.error("请说明原因！");
+        }
+        ShippingApprove shippingApprove = new ShippingApprove();
+        shippingApprove.setOrderId(shippingGoods.getOrderId());
+        shippingApprove.setTaskStatus(TaskStatus.special_handling_for_unloading.getCode());
+        List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
+        if (CollectionUtils.isEmpty(shippingApproves)) {
+            shippingApprove.setApplicantUser(getUsername());
+            shippingApprove.setApplicantReason(shippingGoods.getSpecialCaseReason());
+            shippingApprove.setApplicantTime(DateUtils.getNowDate());
+            shippingApproveMapper.insertShippingApprove(shippingApprove);
+        } else {
+            ShippingApprove old = shippingApproves.get(0);
+            if (StringUtil.isEmpty(old.getApproveStatus())) {
+                return AjaxResult.error("正在审批中，请耐心等待！");
+            }
+            if (StringUtil.isEquals(old.getApproveStatus(), "0")) {
+                return AjaxResult.error("审批不通过！");
+            }
+        }
+        return AjaxResult.success();
     }
 
     /**
