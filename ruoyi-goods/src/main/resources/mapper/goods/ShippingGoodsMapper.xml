@@ -22,10 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="publishBy"    column="publish_by"    />
         <result property="publishTime"    column="publish_time"    />
+        <result property="arrivalTime"    column="arrival_time"    />
+        <result property="specialCases"    column="special_cases"    />
+        <result property="specialCaseReason"    column="special_case_reason"    />
     </resultMap>
 
     <sql id="selectShippingGoodsVo">
-        select id, shipping_unit, order_id, helen_number, ship_number, transit_port, destination_port, weight, weight_unit, status, goods, create_by, create_time, update_by, update_time, publish_by, publish_time from shipping_goods
+        select id, shipping_unit, order_id, helen_number, ship_number, transit_port, destination_port, weight, weight_unit, status, goods, create_by,
+               create_time, update_by, update_time, publish_by, publish_time, arrival_time, special_cases, special_case_reason from shipping_goods
     </sql>
 
     <select id="selectShippingGoodsList" parameterType="ShippingGoods" resultMap="ShippingGoodsResult">
@@ -110,6 +114,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="publishBy != null">publish_by = #{publishBy},</if>
             <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="specialCases != null">special_cases = #{specialCases},</if>
+            <if test="arrivalTime != null">arrival_time = #{arrivalTime},</if>
         </trim>
         where id = #{id}
     </update>

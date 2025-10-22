@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.TaskStatus;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtil;
 import com.ruoyi.dispatch.domain.ShippingDispatch;
 import com.ruoyi.dispatch.mapper.ShippingDispatchMapper;
 import com.ruoyi.insurance.domain.ShippingInsurance;
@@ -86,7 +87,6 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
     @Override
     public int updateShippingGoods(ShippingGoods shippingGoods)
     {
-        shippingGoods.setUpdateTime(DateUtils.getNowDate());
         return shippingGoodsMapper.updateShippingGoods(shippingGoods);
     }
 
@@ -132,6 +132,36 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
         return AjaxResult.success();
     }
 
+    @Override
+    public AjaxResult arrivalEdit(ShippingGoods shippingGoods)
+    {
+        if (shippingGoods.getArrivalTime() == null) {
+            return AjaxResult.error("请选择到港时间");
+        }
+       if(StringUtil.isEquals(shippingGoods.getSpecialCases(),"01")){
+           //卸货特殊情况处理
+           ShippingTask shippingTask = new ShippingTask();
+           shippingTask.setOrderId(shippingGoods.getOrderId());
+           shippingTask.setTaskStatus(TaskStatus.arrived_at_port.getCode());
+           iShippingTaskService.generateTaskAndDetails(shippingTask);
+           shippingTask.setTaskStatus(TaskStatus.special_handling_for_unloading.getCode());
+           iShippingTaskService.generateTaskAndDetails(shippingTask);
+           ShippingGoods good = new ShippingGoods();
+           good.setId(shippingGoods.getId());
+           good.setStatus(TaskStatus.special_handling_for_unloading.getCode());
+           shippingGoodsMapper.updateShippingGoods(good);
+       }else{
+           ShippingTask shippingTask = new ShippingTask();
+           shippingTask.setOrderId(shippingGoods.getOrderId());
+           shippingTask.setTaskStatus(TaskStatus.arrived_at_port.getCode());
+           iShippingTaskService.generateTaskAndDetails(shippingTask);
+           ShippingGoods good = new ShippingGoods();
+           good.setId(shippingGoods.getId());
+           good.setStatus(TaskStatus.arrived_at_port.getCode());
+           shippingGoodsMapper.updateShippingGoods(good);
+       }
+       return AjaxResult.success();
+    }
 
     /**
      * 批量删除货源信息

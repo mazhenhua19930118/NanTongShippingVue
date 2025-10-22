@@ -50,6 +50,15 @@ public class ShippingGoodsController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/arrival/list")
+    public TableDataInfo ArrviaList(ShippingGoods shippingGoods)
+    {
+        startPage();
+        shippingGoods.setStatus(TaskStatus.insurance.getCode());
+        List<ShippingGoods> list = shippingGoodsService.selectShippingGoodsList(shippingGoods);
+        return getDataTable(list);
+    }
+
     /**
      * 导出货源信息列表
      */
@@ -94,6 +103,14 @@ public class ShippingGoodsController extends BaseController
     {
         return toAjax(shippingGoodsService.updateShippingGoods(shippingGoods));
     }
+
+    @Log(title = "到港信息", businessType = BusinessType.UPDATE)
+    @PostMapping("arrivalEdit")
+    public AjaxResult arrivalEdit(@RequestBody ShippingGoods shippingGoods)
+    {
+        return shippingGoodsService.arrivalEdit(shippingGoods);
+    }
+
 
     /**
      * 发布

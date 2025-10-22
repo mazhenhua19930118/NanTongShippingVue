@@ -46,6 +46,7 @@ public interface IShippingGoodsService
     public int updateShippingGoods(ShippingGoods shippingGoods);
 
     public AjaxResult publishShippingGoods(ShippingGoods shippingGoods);
+    public AjaxResult arrivalEdit(ShippingGoods shippingGoods);
 
     /**
      * 批量删除货源信息

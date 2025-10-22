@@ -71,7 +71,42 @@ public class ShippingGoods extends BaseEntity
     @Excel(name = "发布时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date publishTime;
 
-    public void setId(Long id) 
+    /** 到港时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "到港时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date arrivalTime;
+
+    @Excel(name = "特殊场景类型")
+    private String specialCases;
+
+    @Excel(name = "特殊原因")
+    private String specialCaseReason;
+
+    public Date getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(Date arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public String getSpecialCases() {
+        return specialCases;
+    }
+
+    public void setSpecialCases(String specialCases) {
+        this.specialCases = specialCases;
+    }
+
+    public String getSpecialCaseReason() {
+        return specialCaseReason;
+    }
+
+    public void setSpecialCaseReason(String specialCaseReason) {
+        this.specialCaseReason = specialCaseReason;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

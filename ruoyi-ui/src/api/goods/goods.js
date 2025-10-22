@@ -9,6 +9,14 @@ export function listGoods(query) {
   })
 }
 
+export function listArrivalGoods(query) {
+  return request({
+    url: '/goods/goods/arrival/list',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询货源信息详细
 export function getGoods(id) {
   return request({
@@ -31,6 +39,14 @@ export function updateGoods(data) {
   return request({
     url: '/goods/goods',
     method: 'put',
+    data: data
+  })
+}
+
+export function arrvialEdit(data) {
+  return request({
+    url: '/goods/goods/arrivalEdit',
+    method: 'post',
     data: data
   })
 }
