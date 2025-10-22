@@ -183,6 +183,10 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
             shippingApprove.setApplicantReason(shippingGoods.getSpecialCaseReason());
             shippingApprove.setApplicantTime(DateUtils.getNowDate());
             shippingApproveMapper.insertShippingApprove(shippingApprove);
+            ShippingTask shippingTask = new ShippingTask();
+            shippingTask.setOrderId(shippingGoods.getOrderId());
+            shippingTask.setTaskStatus(TaskStatus.special_handling_for_unloading.getCode());
+            iShippingTaskService.generateTaskAndDetails(shippingTask);
         } else {
             ShippingApprove old = shippingApproves.get(0);
             if (StringUtil.isEmpty(old.getApproveStatus())) {
