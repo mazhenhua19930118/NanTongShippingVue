@@ -9,15 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否预付款 0否 1是" prop="isAdvancePayment">
-        <el-input
-          v-model="queryParams.isAdvancePayment"
-          placeholder="请输入是否预付款 0否 1是"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="重量" prop="weight">
+      <el-form-item label="装载重量" prop="weight">
         <el-input
           v-model="queryParams.weight"
           placeholder="请输入重量"
@@ -25,13 +17,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="重量单位 1吨 2千克" prop="weightUnit">
-        <el-input
-          v-model="queryParams.weightUnit"
-          placeholder="请输入重量单位 1吨 2千克"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="重量单位" prop="weightUnit">
+        <el-select v-model="form.weightUnit" placeholder="请输入重量单位">
+          <el-option
+            v-for="dict in dict.type.ship_unit"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="子订单价格" prop="subOrderPrice">
         <el-input
@@ -49,21 +43,23 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="超耗重量" prop="aboveLimitWeight">
+      <el-form-item label="实际重量" prop="aboveLimitWeight">
         <el-input
           v-model="queryParams.aboveLimitWeight"
-          placeholder="请输入超耗重量"
+          placeholder="请输入实际重量"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="超耗重量单位" prop="aboveLimitWeightUnit">
-        <el-input
-          v-model="queryParams.aboveLimitWeightUnit"
-          placeholder="请输入超耗重量单位"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="实际重量单位" prop="aboveLimitWeightUnit">
+        <el-select v-model="form.aboveLimitWeightUnit" placeholder="请输入重量单位">
+          <el-option
+            v-for="dict in dict.type.ship_unit"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="货物价格" prop="goodsPrice">
         <el-input
@@ -105,14 +101,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否上传卸货管理明细" prop="isUploadDetailsManagement">
-        <el-input
-          v-model="queryParams.isUploadDetailsManagement"
-          placeholder="请输入是否上传卸货管理明细"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="是否上传卸货管理明细" prop="isUploadDetailsManagement">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.isUploadDetailsManagement"-->
+<!--          placeholder="请输入是否上传卸货管理明细"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -169,19 +165,28 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
-      <el-table-column label="是否预付款 0否 1是" align="center" prop="isAdvancePayment" />
-      <el-table-column label="重量" align="center" prop="weight" />
-      <el-table-column label="重量单位 1吨 2千克" align="center" prop="weightUnit" />
-      <el-table-column label="子订单价格" align="center" prop="subOrderPrice" />
+<!--      <el-table-column label="是否预付款 0否 1是" align="center" prop="isAdvancePayment" />-->
+      <el-table-column label="装载重量" align="center" prop="weight" />
+      <el-table-column label="装载重量单位" align="center" prop="weightUnit" >
+      <template slot-scope="scope">
+        <dict-tag :options="dict.type.ship_unit" :value="scope.row.weightUnit"/>
+      </template>
+      </el-table-column>
+      <el-table-column label="实际重量" align="center" prop="aboveLimitWeight" />
+      <el-table-column label="实际重量单位" align="center" prop="aboveLimitWeightUnit" >
+      <template slot-scope="scope">
+        <dict-tag :options="dict.type.ship_unit" :value="scope.row.aboveLimitWeightUnit"/>
+      </template>
+      </el-table-column>
+      <el-table-column label="损耗" align="center" prop="float" />
       <el-table-column label="主订单价格" align="center" prop="mainOrderPrice" />
-      <el-table-column label="超耗重量" align="center" prop="aboveLimitWeight" />
-      <el-table-column label="超耗重量单位" align="center" prop="aboveLimitWeightUnit" />
+      <el-table-column label="子订单价格" align="center" prop="subOrderPrice" />
       <el-table-column label="货物价格" align="center" prop="goodsPrice" />
       <el-table-column label="支付金额" align="center" prop="paymentAmount" />
       <el-table-column label="结算金额" align="center" prop="settlementAmount" />
       <el-table-column label="延期费支付金额" align="center" prop="deferredPayment" />
       <el-table-column label="延期费结算金额" align="center" prop="deferredSettlement" />
-      <el-table-column label="是否上传卸货管理明细" align="center" prop="isUploadDetailsManagement" />
+<!--      <el-table-column label="是否上传卸货管理明细" align="center" prop="isUploadDetailsManagement" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -190,7 +195,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['finance:finance:edit']"
-          >修改</el-button>
+          >填报卸货资料</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['finance:finance:edit']"
+          >支付</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -209,26 +221,75 @@
         <el-form-item label="订单编号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入订单编号" />
         </el-form-item>
-        <el-form-item label="是否预付款 0否 1是" prop="isAdvancePayment">
-          <el-input v-model="form.isAdvancePayment" placeholder="请输入是否预付款 0否 1是" />
-        </el-form-item>
-        <el-form-item label="重量" prop="weight">
+        <el-form-item label="装载重量" prop="weight">
           <el-input v-model="form.weight" placeholder="请输入重量" />
         </el-form-item>
-        <el-form-item label="重量单位 1吨 2千克" prop="weightUnit">
-          <el-input v-model="form.weightUnit" placeholder="请输入重量单位 1吨 2千克" />
+        <el-form-item label="装载重量单位" prop="weightUnit">
+          <el-select v-model="form.weightUnit" placeholder="请输入重量单位">
+            <el-option
+              v-for="dict in dict.type.ship_unit"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+<!--        <el-form-item label="子订单价格" prop="subOrderPrice">-->
+<!--          <el-input v-model="form.subOrderPrice" placeholder="请输入子订单价格" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="主订单价格" prop="mainOrderPrice">-->
+<!--          <el-input v-model="form.mainOrderPrice" placeholder="请输入主订单价格" />-->
+<!--        </el-form-item>-->
+        <el-form-item label="实际重量" prop="aboveLimitWeight">
+          <el-input v-model="form.aboveLimitWeight" placeholder="请输入超耗重量单位" />
+
+        </el-form-item>
+        <el-form-item label="实际重量单位" prop="aboveLimitWeightUnit">
+          <el-select v-model="form.aboveLimitWeightUnit" placeholder="请输入实际重量单位">
+            <el-option
+              v-for="dict in dict.type.ship_unit"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+<!--        <el-form-item label="货物价格" prop="goodsPrice">-->
+<!--          <el-input v-model="form.goodsPrice" placeholder="请输入货物价格" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="支付金额" prop="paymentAmount">-->
+<!--          <el-input v-model="form.paymentAmount" placeholder="请输入支付金额" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="结算金额" prop="settlementAmount">-->
+<!--          <el-input v-model="form.settlementAmount" placeholder="请输入结算金额" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="延期费支付金额" prop="deferredPayment">-->
+<!--          <el-input v-model="form.deferredPayment" placeholder="请输入延期费支付金额" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="延期费结算金额" prop="deferredSettlement">-->
+<!--          <el-input v-model="form.deferredSettlement" placeholder="请输入延期费结算金额" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="是否上传卸货管理明细" prop="isUploadDetailsManagement">-->
+<!--          <el-input v-model="form.isUploadDetailsManagement" placeholder="请输入是否上传卸货管理明细" />-->
+<!--        </el-form-item>-->
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+
+    <el-dialog :title="financeTitle" :visible.sync="openFinance" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="订单编号" prop="orderId">
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" />
         </el-form-item>
         <el-form-item label="子订单价格" prop="subOrderPrice">
           <el-input v-model="form.subOrderPrice" placeholder="请输入子订单价格" />
         </el-form-item>
         <el-form-item label="主订单价格" prop="mainOrderPrice">
           <el-input v-model="form.mainOrderPrice" placeholder="请输入主订单价格" />
-        </el-form-item>
-        <el-form-item label="超耗重量" prop="aboveLimitWeight">
-          <el-input v-model="form.aboveLimitWeight" placeholder="请输入超耗重量" />
-        </el-form-item>
-        <el-form-item label="超耗重量单位" prop="aboveLimitWeightUnit">
-          <el-input v-model="form.aboveLimitWeightUnit" placeholder="请输入超耗重量单位" />
         </el-form-item>
         <el-form-item label="货物价格" prop="goodsPrice">
           <el-input v-model="form.goodsPrice" placeholder="请输入货物价格" />
@@ -245,9 +306,9 @@
         <el-form-item label="延期费结算金额" prop="deferredSettlement">
           <el-input v-model="form.deferredSettlement" placeholder="请输入延期费结算金额" />
         </el-form-item>
-        <el-form-item label="是否上传卸货管理明细" prop="isUploadDetailsManagement">
-          <el-input v-model="form.isUploadDetailsManagement" placeholder="请输入是否上传卸货管理明细" />
-        </el-form-item>
+        <!--        <el-form-item label="是否上传卸货管理明细" prop="isUploadDetailsManagement">-->
+        <!--          <el-input v-model="form.isUploadDetailsManagement" placeholder="请输入是否上传卸货管理明细" />-->
+        <!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -259,9 +320,16 @@
 
 <script>
 import { listFinance, getFinance, delFinance, addFinance, updateFinance } from "@/api/finance/finance"
+import finance from "@/views/finance/finance/index.vue";
 
 export default {
   name: "Finance",
+  dicts: ['ship_task_status','ship_unit'],
+  computed: {
+    finance() {
+      return finance
+    }
+  },
   data() {
     return {
       // 遮罩层
@@ -280,8 +348,10 @@ export default {
       financeList: [],
       // 弹出层标题
       title: "",
+      financeTitle: "",
       // 是否显示弹出层
       open: false,
+      openFinance: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
