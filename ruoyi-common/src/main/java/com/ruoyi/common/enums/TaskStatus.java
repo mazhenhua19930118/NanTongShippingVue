@@ -42,6 +42,7 @@ public enum TaskStatus {
     special_handling_for_unloading("2201", "卸货特殊情况处理", "卸货特殊情况处理"),
     wait_unloaded("2202", "待卸货", "待卸货"),
     unloaded("2301", "已卸货", "已卸货"),
+    camera("2302", "摄像头说明已补充", "摄像头说明已补充"),
     upload_details("2400", "已上传卸货数据", "已上传卸货数据"),
     paid("2401", "已支付", "支付了运费"),
     already_settled("2501", "已结算", "结算了运费"),

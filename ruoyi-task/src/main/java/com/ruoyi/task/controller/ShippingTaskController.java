@@ -25,6 +25,7 @@ import com.ruoyi.common.vo.TaskNodeVo;
 import com.ruoyi.system.service.ISysUserService;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
+import com.ruoyi.task.service.IShippingTaskDetailService;
 import com.ruoyi.task.service.IShippingTaskService;
 import com.ruoyi.upload.domain.ShippingUpload;
 import com.ruoyi.upload.service.IShippingUploadService;
@@ -55,6 +56,8 @@ public class ShippingTaskController extends BaseController
     private ISysUserService userService;
     @Autowired
     private IShippingUploadService iShippingUploadService;
+    @Autowired
+    private IShippingTaskDetailService shippingTaskDetailService;
 
     /**
      * 查询
@@ -90,6 +93,17 @@ public class ShippingTaskController extends BaseController
         }
         return getDataTable(list);
     }
+
+    @GetMapping("/camera/list")
+    public TableDataInfo cameraList(ShippingTask shippingTask)
+    {
+        startPage();
+        ShippingTaskDetail shippingTaskDetail = new ShippingTaskDetail();
+        shippingTaskDetail.setTaskStatus(TaskStatus.unloaded.getCode());
+        List<ShippingTaskDetail> selectShippingTaskDetailList = shippingTaskDetailService.selectShippingTaskDetailListWithTask(shippingTaskDetail);
+        return getDataTable(selectShippingTaskDetailList);
+    }
+
 
     /**
      * 导出
@@ -188,6 +202,49 @@ public class ShippingTaskController extends BaseController
         try {
             ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
             shippingTask.setTaskStatus(TaskStatus.unloaded.getCode());
+            List<ShippingUpload> fileList = new ArrayList<>();
+            if (files != null && files.length > 0) {
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        // 保存文件到指定目录
+                        ShippingUpload shippingUpload = new ShippingUpload();
+                        shippingUpload.setOriginFileName(file.getOriginalFilename());
+                        shippingUpload.setRelatedId(shippingTask.getOrderId());
+                        shippingUpload.setFileType(FileType.IMG.getCode());
+                        shippingUpload.setCreateBy(getUsername());
+                        shippingUpload.setUploadType(shippingTask.getTaskStatus());
+                        String filePath = FileUploadUtils.uploadNew(Constants.SHIPPING_RESOURCE_PREFIX, file, MimeTypeUtils.IMAGE_EXTENSION);
+                        int lastSlashIndex = filePath.lastIndexOf('/');
+                        // 提取文件名（包括后缀）
+                        if (lastSlashIndex != -1) {
+                            String fileName = filePath.substring(lastSlashIndex + 1);
+                            shippingUpload.setFileName(fileName);
+                        }
+                        shippingUpload.setFilePath(filePath);
+                        fileList.add(shippingUpload);
+                    }
+                }
+            }
+            for (ShippingUpload shippingUpload : fileList) {
+                List<ShippingUpload> shippingUploads = iShippingUploadService.selectShippingUploadList(shippingUpload);
+                if(CollectionUtils.isEmpty(shippingUploads)){
+                    iShippingUploadService.insertShippingUpload(shippingUpload);
+                }
+            }
+            shippingTask.setCurrentUserId(getUserId());
+            shippingTaskService.generateTaskAndDetails(shippingTask);
+            return toAjax(1);
+        } catch (Exception e) {
+            return AjaxResult.error(e.getMessage());
+        }
+    }
+
+    @Log(title = "【修改】", businessType = BusinessType.UPDATE)
+    @PostMapping(path = "/camera",consumes = "multipart/form-data")
+    public AjaxResult camera(@RequestPart("data") String dataJson, @RequestParam(value = "file", required = false) MultipartFile[] files) {
+        try {
+            ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
+            shippingTask.setTaskStatus(TaskStatus.camera.getCode());
             List<ShippingUpload> fileList = new ArrayList<>();
             if (files != null && files.length > 0) {
                 for (MultipartFile file : files) {

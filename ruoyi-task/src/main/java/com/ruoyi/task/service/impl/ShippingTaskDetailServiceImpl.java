@@ -53,6 +53,11 @@ public class ShippingTaskDetailServiceImpl implements IShippingTaskDetailService
     }
 
     @Override
+    public List<ShippingTaskDetail> selectShippingTaskDetailListWithTask(ShippingTaskDetail shippingTaskDetail) {
+        return shippingTaskDetailMapper.selectShippingTaskDetailListWithTask(shippingTaskDetail);
+    }
+
+    @Override
     public int insertShippingTaskDetail(ShippingTaskDetail shippingTaskDetail) {
         return shippingTaskDetailMapper.insertShippingTaskDetail(shippingTaskDetail);
     }

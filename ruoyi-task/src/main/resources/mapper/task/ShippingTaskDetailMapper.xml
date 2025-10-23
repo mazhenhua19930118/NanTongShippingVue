@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectShippingTaskDetailVo">
-        select id, order_id, task_status, director,task_id, create_time, update_time,creator ,camera_instructionsfrom shipping_task_detail
+        select id, order_id, task_status, director,task_id, create_time, update_time,creator ,camera_instructions from shipping_task_detail
     </sql>
 
     <select id="selectShippingTaskDetailList" parameterType="ShippingTaskDetail" resultMap="ShippingTaskDetailResult">
@@ -29,6 +29,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="creator != null "> and creator = #{creator}</if>
             <if test="taskId != null "> and task_id = #{taskId}</if>
             <if test="cameraInstructions != null "> and camera_instructions = #{cameraInstructions}</if>
+        </where>
+    </select>
+
+    <select id="selectShippingTaskDetailListWithTask" parameterType="ShippingTaskDetail" resultMap="ShippingTaskDetailResult">
+       select * from shipping_task_detail d
+        inner join shipping_task t on d.task_id = t.id and t.task_status = d.task_status
+        <where>
+            <if test="orderId != null "> and d.order_id = #{orderId}</if>
+            <if test="taskStatus != null  and taskStatus != ''"> and d.task_status = #{taskStatus}</if>
+            <if test="director != null "> and d.director = #{director}</if>
+            <if test="creator != null "> and d.creator = #{creator}</if>
+            <if test="taskId != null "> and d.task_id = #{taskId}</if>
+            <if test="cameraInstructions != null "> and d.camera_instructions = #{cameraInstructions}</if>
         </where>
     </select>
     

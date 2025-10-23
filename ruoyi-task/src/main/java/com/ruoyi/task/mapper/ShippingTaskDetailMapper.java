@@ -32,6 +32,7 @@ public interface ShippingTaskDetailMapper
      * @return 【请填写功能名称】集合
      */
     public List<ShippingTaskDetail> selectShippingTaskDetailList(ShippingTaskDetail shippingTaskDetail);
+    public List<ShippingTaskDetail> selectShippingTaskDetailListWithTask(ShippingTaskDetail shippingTaskDetail);
 
     /**
      * 新增【请填写功能名称】

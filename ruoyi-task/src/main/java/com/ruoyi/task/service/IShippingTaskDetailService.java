@@ -27,6 +27,7 @@ public interface IShippingTaskDetailService
     public List<ShippingTaskDetail> selectShippingTaskDetailByRelatedId(String goodsId);
 
     public List<ShippingTaskDetail> selectShippingTaskDetailList(ShippingTaskDetail shippingTaskDetail);
+    public List<ShippingTaskDetail> selectShippingTaskDetailListWithTask(ShippingTaskDetail shippingTaskDetail);
 
     public int insertShippingTaskDetail(ShippingTaskDetail shippingTaskDetail);
 

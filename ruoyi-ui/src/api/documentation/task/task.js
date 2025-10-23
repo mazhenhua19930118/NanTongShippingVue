@@ -9,6 +9,14 @@ export function listTask (query) {
   })
 }
 
+export function listCameraTask (query) {
+  return request({
+    url: '/documentation/task/camera/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function listUnloadTask (query) {
   return request({
     url: '/documentation/task/unload/list',
@@ -50,6 +58,15 @@ export function updateTask (data) {
     data: data,
     headers: { 'Content-Type': ' multipart/form-data'}
     })
+}
+
+export function updateCameraTask (data) {
+  return request({
+    url: '/documentation/task/camera',
+    method: 'post',
+    data: data,
+    headers: { 'Content-Type': ' multipart/form-data'}
+  })
 }
 
 export function updateUnloadTask (data) {
