@@ -14,6 +14,7 @@ import com.ruoyi.common.utils.StringUtil;
 import com.ruoyi.common.vo.GoodsDetailVo;
 import com.ruoyi.common.vo.ShippingUploadVo;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.task.domain.FinanceDto;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
 import com.ruoyi.task.mapper.ShippingTaskDetailMapper;
@@ -158,6 +159,11 @@ public class ShippingTaskServiceImpl implements IShippingTaskService
             shippingTaskDetail.setCameraInstructions(shippingTask.getCameraInstructions());
             shippingTaskDetailMapper.updateShippingTaskDetail(shippingTaskDetail);
         }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void insertFiance(FinanceDto financeDto){
+        shippingTaskMapper.insertFiance(financeDto);
     }
 
     @Override

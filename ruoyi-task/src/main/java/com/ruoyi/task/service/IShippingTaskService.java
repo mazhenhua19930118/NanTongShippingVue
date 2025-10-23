@@ -2,6 +2,7 @@ package com.ruoyi.task.service;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.vo.GoodsDetailVo;
+import com.ruoyi.task.domain.FinanceDto;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
 
@@ -42,6 +43,7 @@ public interface IShippingTaskService
     public int insertShippingTask(ShippingTask shippingTask);
 
     public void generateTaskAndDetails(ShippingTask shippingTask);
+    public void insertFiance(FinanceDto financeDto);
 
     public void clearTaskAndDetailsByGoodsId(Long goodsId);
 

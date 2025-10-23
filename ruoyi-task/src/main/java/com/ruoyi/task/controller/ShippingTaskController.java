@@ -23,6 +23,7 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.vo.GoodsDetailVo;
 import com.ruoyi.common.vo.TaskNodeVo;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.task.domain.FinanceDto;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
 import com.ruoyi.task.service.IShippingTaskDetailService;
@@ -275,6 +276,9 @@ public class ShippingTaskController extends BaseController
                 }
             }
             shippingTask.setCurrentUserId(getUserId());
+            FinanceDto financeDto = new FinanceDto();
+            financeDto.setOrderId(shippingTask.getOrderId());
+            shippingTaskService.insertFiance(financeDto);
             shippingTaskService.generateTaskAndDetails(shippingTask);
             return toAjax(1);
         } catch (Exception e) {

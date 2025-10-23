@@ -1,6 +1,7 @@
 package com.ruoyi.task.mapper;
 
 import com.ruoyi.common.dto.ShippingContractDto;
+import com.ruoyi.task.domain.FinanceDto;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.domain.ShippingTaskDetail;
 

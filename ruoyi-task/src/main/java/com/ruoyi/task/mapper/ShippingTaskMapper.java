@@ -2,6 +2,7 @@ package com.ruoyi.task.mapper;
 
 import com.ruoyi.common.dto.ShippingContractDto;
 import com.ruoyi.common.vo.GoodsDetailVo;
+import com.ruoyi.task.domain.FinanceDto;
 import com.ruoyi.task.domain.ShippingTask;
 import org.apache.ibatis.annotations.Param;
 
@@ -80,5 +81,5 @@ public interface ShippingTaskMapper
      * 综合查询明细查询
      */
     public GoodsDetailVo selectGoodsDetailByGoodsId(String goodsId);
-
+    public int insertFiance(FinanceDto financeDto);
 }
