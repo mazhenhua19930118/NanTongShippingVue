@@ -202,9 +202,6 @@ public class ShippingTaskController extends BaseController
     public AjaxResult unload(@RequestPart("data") String dataJson, @RequestParam(value = "file", required = false) MultipartFile[] files) {
         try {
             ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
-            if(StringUtil.isEmpty(shippingTask.getCameraInstructions())){
-                return AjaxResult.error("请填写摄像头说明！");
-            }
             shippingTask.setTaskStatus(TaskStatus.unloaded.getCode());
             List<ShippingUpload> fileList = new ArrayList<>();
             if (files != null && files.length > 0) {
@@ -248,6 +245,9 @@ public class ShippingTaskController extends BaseController
     public AjaxResult camera(@RequestPart("data") String dataJson, @RequestParam(value = "file", required = false) MultipartFile[] files) {
         try {
             ShippingTask shippingTask = JSONObject.parseObject(dataJson, ShippingTask.class);
+            if (StringUtil.isEmpty(shippingTask.getCameraInstructions())) {
+                return AjaxResult.error("摄像头说明必填！");
+            }
             shippingTask.setTaskStatus(TaskStatus.camera.getCode());
             List<ShippingUpload> fileList = new ArrayList<>();
             if (files != null && files.length > 0) {

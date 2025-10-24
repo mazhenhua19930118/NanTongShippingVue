@@ -484,14 +484,16 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             updateFinance(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功")
+              this.$modal.msgSuccess("支付成功")
               this.open = false
+              this.openFinance = false
               this.getList()
             })
           } else {
             addFinance(this.form).then(response => {
               this.$modal.msgSuccess("新增成功")
               this.open = false
+              this.openFinance = false
               this.getList()
             })
           }
@@ -505,14 +507,16 @@ export default {
         if (valid) {
           if (this.form.id != null) {
             reportUnloadingData(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功")
+              this.$modal.msgSuccess("填报成功")
               this.openFinance = false
+              this.open = false
               this.getList()
             })
           } else {
             addFinance(this.form).then(response => {
               this.$modal.msgSuccess("新增成功")
               this.openFinance = false
+              this.open = false
               this.getList()
             })
           }
