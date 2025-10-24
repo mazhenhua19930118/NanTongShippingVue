@@ -143,6 +143,24 @@ public class ShippingFinanceServiceImpl implements IShippingFinanceService
         return AjaxResult.success();
     }
 
+    @Override
+    public AjaxResult settlement(ShippingFinance shippingFinance)
+    {
+        ShippingFinance finance = shippingFinanceMapper.selectShippingFinanceById(shippingFinance.getId());
+        if (shippingFinance.getPaymentAmount() == null) {
+            return AjaxResult.error("请先填写支付金额！");
+        }
+        if (shippingFinance.getSettlementAmount() == null) {
+            return AjaxResult.error("请先填写结算金额！");
+        }
+        shippingFinance.setUpdateTime(DateUtils.getNowDate());
+        shippingFinanceMapper.updateShippingFinance(shippingFinance);
+        ShippingTask shippingTask = new ShippingTask();
+        shippingTask.setOrderId(shippingFinance.getOrderId());
+        shippingTask.setTaskStatus(TaskStatus.already_settled.getCode());
+        shippingTaskService.generateTaskAndDetails(shippingTask);
+        return AjaxResult.success();
+    }
 
 
     /**

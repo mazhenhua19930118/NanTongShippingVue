@@ -45,6 +45,7 @@ public interface IShippingFinanceService
      */
     public AjaxResult updateShippingFinance(ShippingFinance shippingFinance);
     public AjaxResult reportUnloadingData(ShippingFinance shippingFinance);
+    public AjaxResult settlement(ShippingFinance shippingFinance);
 
     /**
      * 批量删除财务管理

@@ -98,6 +98,13 @@ public class ShippingFinanceController extends BaseController
         return shippingFinanceService.updateShippingFinance(shippingFinance);
     }
 
+    @Log(title = "结算管理", businessType = BusinessType.UPDATE)
+    @PostMapping("settlement")
+    public AjaxResult settlement(@RequestBody ShippingFinance shippingFinance)
+    {
+        return shippingFinanceService.settlement(shippingFinance);
+    }
+
     @Log(title = "填报卸货数据", businessType = BusinessType.UPDATE)
     @PostMapping("reportUnloadingData")
     public AjaxResult reportUnloadingData(@RequestBody ShippingFinance shippingFinance)

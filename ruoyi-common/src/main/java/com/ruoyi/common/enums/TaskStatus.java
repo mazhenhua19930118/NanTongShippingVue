@@ -47,7 +47,6 @@ public enum TaskStatus {
     wait_upload_details("2500", "待支付", "待支付"),
     paid("2501", "已支付", "支付了运费"),
     already_settled("2601", "已结算", "结算了运费"),
-    advance_payment("2701", "预付款", "进行了预保险"),
     termination("2801", "已终止", "终止了任务");
     private String code;
     private String desc;

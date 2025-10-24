@@ -301,21 +301,21 @@ public class ShippingTaskController extends BaseController
      * @param shippingTask
      * @return
      */
-    @GetMapping("/internal/list")
-    public TableDataInfo internalList(ShippingTask shippingTask)
-    {
-        startPage();
-        shippingTask.setTaskStatus(TaskStatus.advance_payment.getCode());
-        List<ShippingTask> list = shippingTaskService.selectShippingTaskList(shippingTask);
-        for(ShippingTask task :list){
-            if(task.getAssignUserId()!=null){
-                SysUser sysUser = userService.selectUserById(task.getAssignUserId());
-                task.setAssignUserName(sysUser.getUserName());
-                task.setAssignUserNickName(sysUser.getNickName());
-            }
-        }
-        return getDataTable(list);
-    }
+//    @GetMapping("/internal/list")
+//    public TableDataInfo internalList(ShippingTask shippingTask)
+//    {
+//        startPage();
+//        shippingTask.setTaskStatus(TaskStatus.advance_payment.getCode());
+//        List<ShippingTask> list = shippingTaskService.selectShippingTaskList(shippingTask);
+//        for(ShippingTask task :list){
+//            if(task.getAssignUserId()!=null){
+//                SysUser sysUser = userService.selectUserById(task.getAssignUserId());
+//                task.setAssignUserName(sysUser.getUserName());
+//                task.setAssignUserNickName(sysUser.getNickName());
+//            }
+//        }
+//        return getDataTable(list);
+//    }
 
     /**
      * 综合查询 任务节点查询

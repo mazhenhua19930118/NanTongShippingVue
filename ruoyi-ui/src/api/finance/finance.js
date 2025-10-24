@@ -35,6 +35,14 @@ export function updateFinance(data) {
   })
 }
 
+export function updateSettlement(data) {
+  return request({
+    url: '/finance/finance/settlement',
+    method: 'post',
+    data: data
+  })
+}
+
 export function reportUnloadingData(data) {
   return request({
     url: '/finance/finance/reportUnloadingData',
