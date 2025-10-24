@@ -11,7 +11,7 @@ export function listContract(query) {
 
 export function listMainContract(query) {
   return request({
-    url: '/contract/contract/mcdainList',
+    url: '/contract/contract/mainList',
     method: 'get',
     params: query
   })

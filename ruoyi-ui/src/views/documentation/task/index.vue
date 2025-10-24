@@ -6,10 +6,10 @@
              :inline="true"
              v-show="showSearch"
              label-width="100px">
-      <el-form-item label="货源编号"
-                    prop="goodsId">
-        <el-input v-model="queryParams.goodsId"
-                  placeholder="请输入货源编号"
+      <el-form-item label="订单编号"
+                    prop="orderId">
+        <el-input v-model="queryParams.orderId"
+                  placeholder="请输入订单编号"
                   clearable
                   @keyup.enter.native="handleQuery" />
       </el-form-item>
@@ -18,7 +18,7 @@
         <el-select v-model="queryParams.taskStatus"
                    placeholder="请选择任务状态"
                    clearable>
-          <el-option v-for="dict in dict.type.task_status"
+          <el-option v-for="dict in dict.type.ship_task_status"
                      :key="dict.value"
                      :label="dict.label"
                      :value="dict.value" />
@@ -99,14 +99,14 @@
       <el-table-column label="序号"
                        align="center"
                        prop="id" />
-      <el-table-column label="货源编号"
+      <el-table-column label="订单编号"
                        align="center"
-                       prop="goodsId" />
+                       prop="orderId" />
       <el-table-column label="任务状态"
                        align="center"
                        prop="taskStatus">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.task_status"
+          <dict-tag :options="dict.type.ship_task_status"
                     :value="scope.row.taskStatus" />
         </template>
       </el-table-column>
@@ -155,19 +155,19 @@
                :rules="rules"
                label-width="80px">
         <el-form-item label="订单编号"
-                      prop="goodsId">
+                      prop="orderId">
           <el-input v-model="form.orderId"
-                    placeholder="请输入货源编号" />
+                    placeholder="请输入订单编号" />
         </el-form-item>
-        <el-form-item label="任务状态"
-                      prop="taskStatus">
-          <el-select v-model="form.taskStatus"
-                     placeholder="请选择任务状态"
-                     disabled>
-            <el-option label="已装货"
-                       :value='StatusEnum.loading.value'></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="任务状态"-->
+<!--                      prop="taskStatus">-->
+<!--          <el-select v-model="form.taskStatus"-->
+<!--                     placeholder="请选择任务状态"-->
+<!--                     disabled>-->
+<!--            <el-option label="已装货"-->
+<!--                       :value='StatusEnum.loading.value'></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
         <el-form-item label="摄像头说明"
                       prop="cameraInstructions">
           <el-input v-model="form.cameraInstructions"
@@ -233,7 +233,7 @@ import { arrLength } from "../../../common/common";
 import { StatusEnum } from "../../../common/taskStatus.enum";
 export default {
   name: "Task",
-  dicts: ['task_status'],
+  dicts: ['ship_task_status'],
   data () {
     return {
       // 遮罩层
@@ -258,7 +258,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        goodsId: null,
+        orderId: null,
         taskStatus: null,
         assignUserId: null,
       },

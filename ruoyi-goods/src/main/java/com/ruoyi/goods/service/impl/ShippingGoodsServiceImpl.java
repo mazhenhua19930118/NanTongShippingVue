@@ -162,9 +162,11 @@ public class ShippingGoodsServiceImpl implements IShippingGoodsService
            iShippingTaskService.generateTaskAndDetails(shippingTask);
            ShippingGoods good = new ShippingGoods();
            good.setId(shippingGoods.getId());
-           good.setStatus(TaskStatus.arrived_at_port.getCode());
+           good.setStatus(TaskStatus.wait_unloaded.getCode());
            good.setSpecialCases(shippingGoods.getSpecialCases());
            shippingGoodsMapper.updateShippingGoods(good);
+           shippingTask.setTaskStatus(TaskStatus.wait_unloaded.getCode());
+           iShippingTaskService.updateShippingTask(shippingTask);
        }
        return AjaxResult.success();
     }

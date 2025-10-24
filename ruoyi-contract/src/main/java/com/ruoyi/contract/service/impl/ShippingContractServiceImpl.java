@@ -211,6 +211,7 @@ public class ShippingContractServiceImpl implements IShippingContractService
         if(StringUtil.isEquals(shippingContract.getMainContractSign(), SysStatus.Yes.getCode())){
             shippingGoods.setStatus(TaskStatus.sign_main_contract.getCode());
         }else{
+            shippingContractMapper.updateShippingContract(shippingContract);
             return AjaxResult.success();
         }
         shippingGoodsMapper.updateShippingGoods(shippingGoods);

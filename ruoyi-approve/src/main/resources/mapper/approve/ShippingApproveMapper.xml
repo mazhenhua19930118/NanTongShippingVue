@@ -101,14 +101,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
-    <select id="selectShippingDispatch" parameterType="Dispatch" resultMap="DispatchResult">
+    <select id="selectShippingDispatch" parameterType="String" resultMap="DispatchResult">
         select * from shipping_dispatch
         <where>
-            <if test="orderId != null  and orderId != ''"> and t.order_id = #{orderId}</if>
-            <if test="deposit != null "> and d.deposit = #{deposit}</if>
-            <if test="shippingCost != null "> and d.shipping_cost = #{shippingCost}</if>
-            <if test="isNeedSubSign != null  and isNeedSubSign != ''"> and d.is_need_sub_sign = #{isNeedSubSign}</if>
-            <if test="taskStatus != null  and taskStatus != ''"> and t.task_status = #{taskStatus}</if>
+            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
         </where>
     </select>
 

@@ -137,7 +137,7 @@
       <el-table-column label="子合同编号" align="center" prop="subContractNo" />
       <el-table-column label="子合同名称" align="center" prop="subContractName" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
-      <el-table-column label="主合同是否签订1" align="center" prop="mainContractSign">
+      <el-table-column label="主合同是否签订" align="center" prop="mainContractSign">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.mainContractSign"/>
         </template>

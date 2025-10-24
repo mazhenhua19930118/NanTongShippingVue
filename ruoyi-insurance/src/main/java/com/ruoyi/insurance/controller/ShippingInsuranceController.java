@@ -56,6 +56,17 @@ public class ShippingInsuranceController extends BaseController
         return getDataTable(list);
     }
 
+    @PreAuthorize("@ss.hasPermi('insurance:insurance:list')")
+    @GetMapping("/sure/list")
+    public TableDataInfo sureList(ShippingInsurance shippingInsurance)
+    {
+        startPage();
+        List<String> taskStatusList = Arrays.asList(TaskStatus.loading.getCode());
+        shippingInsurance.setTaskStatusList(taskStatusList);
+        List<ShippingInsurance> list = shippingInsuranceService.selectShippingInsuranceList(shippingInsurance);
+        return getDataTable(list);
+    }
+
     /**
      * 导出保险管理列表
      */
@@ -112,6 +123,7 @@ public class ShippingInsuranceController extends BaseController
         }
         shippingInsuranceService.updateShippingInsurance(shippingInsurance);
         ShippingTask shippingTask = new ShippingTask();
+        shippingTask.setOrderId(shippingInsurance.getOrderId());
         //预保险
         if(StringUtil.isEquals("1",shippingInsurance.getInsuranceStatus())){
             shippingTask.setTaskStatus(TaskStatus.pre_insurance.getCode());

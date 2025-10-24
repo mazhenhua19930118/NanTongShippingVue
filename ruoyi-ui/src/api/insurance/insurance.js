@@ -9,6 +9,15 @@ export function listInsurance(query) {
   })
 }
 
+export function listSureInsurance(query) {
+  return request({
+    url: '/insurance/insurance/sure/list',
+    method: 'get',
+    params: query
+  })
+}
+
+
 // 查询保险管理详细
 export function getInsurance(id) {
   return request({

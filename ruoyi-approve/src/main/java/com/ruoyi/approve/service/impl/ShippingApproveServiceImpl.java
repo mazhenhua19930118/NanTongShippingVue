@@ -6,6 +6,8 @@ import com.ruoyi.approve.domain.Dispatch;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.ApproveStatus;
 import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtil;
 import com.ruoyi.task.domain.ShippingTask;
 import com.ruoyi.task.mapper.ShippingTaskMapper;
@@ -16,6 +18,8 @@ import com.ruoyi.approve.mapper.ShippingApproveMapper;
 import com.ruoyi.approve.domain.ShippingApprove;
 import com.ruoyi.approve.service.IShippingApproveService;
 import org.springframework.util.CollectionUtils;
+
+import static org.apache.commons.lang3.SystemUtils.getUserName;
 
 /**
  * 审批Service业务层处理
@@ -85,7 +89,7 @@ public class ShippingApproveServiceImpl implements IShippingApproveService
         if (StringUtil.isEquals(shippingApprove.getApproveStatus(), ApproveStatus.YES.getCode())) {
             if (StringUtil.isEquals(shippingTask.getTaskStatus(), TaskStatus.publish.getCode())) {
                 Dispatch shippingDispatch = shippingApproveMapper.selectShippingDispatch(shippingApprove.getOrderId());
-                if (shippingDispatch==null) {
+                if (shippingDispatch == null) {
                     return AjaxResult.error("任务不存在！");
                 }
                 //需要签订子合同
@@ -114,8 +118,9 @@ public class ShippingApproveServiceImpl implements IShippingApproveService
             }
 
         }
+        shippingApprove.setApproveTime(DateUtils.getNowDate());
+        shippingApprove.setApproveUser(SecurityUtils.getUsername());
         shippingApproveMapper.updateShippingApprove(shippingApprove);
-
         return AjaxResult.success();
     }
 

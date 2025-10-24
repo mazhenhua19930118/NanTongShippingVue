@@ -78,7 +78,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['insurance:insurance:edit']"
-          >修改</el-button>
+          >预保险</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -97,16 +97,16 @@
         <el-form-item label="订单编号" prop="orderId">
           <el-input v-model="form.orderId" placeholder="请输入订单编号" />
         </el-form-item>
-        <el-form-item label="保险状态" prop="insuranceStatus">
-          <el-select v-model="form.insuranceStatus" placeholder="请输入保险状态">
-            <el-option
-              v-for="dict in dict.type.ship_insurance_status"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+<!--        <el-form-item label="保险状态" prop="insuranceStatus">-->
+<!--          <el-select v-model="form.insuranceStatus" placeholder="请输入保险状态">-->
+<!--            <el-option-->
+<!--              v-for="dict in dict.type.ship_insurance_status"-->
+<!--              :key="dict.value"-->
+<!--              :label="dict.label"-->
+<!--              :value="dict.value"-->
+<!--            ></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -226,6 +226,7 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          this.form.insuranceStatus = '1';
           if (this.form.id != null) {
             updateInsurance(this.form).then(response => {
               this.$modal.msgSuccess("修改成功")
