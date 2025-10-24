@@ -88,10 +88,10 @@ public class ShippingFinanceController extends BaseController
     }
 
     /**
-     * 修改财务管理
+     * 修改支付管理
      */
     @PreAuthorize("@ss.hasPermi('finance:finance:edit')")
-    @Log(title = "财务管理", businessType = BusinessType.UPDATE)
+    @Log(title = "支付管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingFinance shippingFinance)
     {

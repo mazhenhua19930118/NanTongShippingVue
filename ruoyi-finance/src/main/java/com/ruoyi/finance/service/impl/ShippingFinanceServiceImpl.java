@@ -88,13 +88,16 @@ public class ShippingFinanceServiceImpl implements IShippingFinanceService
         if (finance.getFloatRate() == null) {
             return AjaxResult.error("请先填报装载重量和实际重量！");
         }
+        if (shippingFinance.getPaymentAmount() == null) {
+            return AjaxResult.error("请先填写支付金额！");
+        }
         ShippingApprove shippingApprove = new ShippingApprove();
         shippingApprove.setOrderId(shippingFinance.getOrderId());
         shippingApprove.setTaskStatus(TaskStatus.wait_upload_details.getCode());
         List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
         if (CollectionUtils.isEmpty(shippingApproves)) {
             shippingApprove.setApplicantTime(DateUtils.getNowDate());
-            shippingApprove.setApplicantReason("运费支付");
+            shippingApprove.setApplicantReason("财务支付申请");
             shippingApprove.setApplicantUser(getUsername());
             shippingApproveMapper.insertShippingApprove(shippingApprove);
         } else {
