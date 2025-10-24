@@ -31,24 +31,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, order_id, is_advance_payment, weight, weight_unit, sub_order_price, main_order_price, above_limit_weight, above_limit_weight_unit, goods_price, payment_amount, settlement_amount, deferred_payment, deferred_settlement, is_upload_details_management, create_by, create_time, update_by, update_time,float_rate from shipping_finance
     </sql>
 
+<!--    <select id="selectShippingFinanceList" parameterType="ShippingFinance" resultMap="ShippingFinanceResult">-->
+<!--        <include refid="selectShippingFinanceVo"/>-->
+<!--        <where>  -->
+<!--            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>-->
+<!--            <if test="isAdvancePayment != null  and isAdvancePayment != ''"> and is_advance_payment = #{isAdvancePayment}</if>-->
+<!--            <if test="weight != null "> and weight = #{weight}</if>-->
+<!--            <if test="weightUnit != null  and weightUnit != ''"> and weight_unit = #{weightUnit}</if>-->
+<!--            <if test="subOrderPrice != null "> and sub_order_price = #{subOrderPrice}</if>-->
+<!--            <if test="mainOrderPrice != null "> and main_order_price = #{mainOrderPrice}</if>-->
+<!--            <if test="aboveLimitWeight != null "> and above_limit_weight = #{aboveLimitWeight}</if>-->
+<!--            <if test="aboveLimitWeightUnit != null  and aboveLimitWeightUnit != ''"> and above_limit_weight_unit = #{aboveLimitWeightUnit}</if>-->
+<!--            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>-->
+<!--            <if test="paymentAmount != null "> and payment_amount = #{paymentAmount}</if>-->
+<!--            <if test="settlementAmount != null "> and settlement_amount = #{settlementAmount}</if>-->
+<!--            <if test="deferredPayment != null "> and deferred_payment = #{deferredPayment}</if>-->
+<!--            <if test="deferredSettlement != null "> and deferred_settlement = #{deferredSettlement}</if>-->
+<!--            <if test="isUploadDetailsManagement != null  and isUploadDetailsManagement != ''"> and is_upload_details_management = #{isUploadDetailsManagement}</if>-->
+<!--            <if test="floatRate != null  and floatRate != ''"> and float_rate = #{floatRate}</if>-->
+<!--        </where>-->
+<!--    </select>-->
+
     <select id="selectShippingFinanceList" parameterType="ShippingFinance" resultMap="ShippingFinanceResult">
-        <include refid="selectShippingFinanceVo"/>
-        <where>  
-            <if test="orderId != null  and orderId != ''"> and order_id = #{orderId}</if>
-            <if test="isAdvancePayment != null  and isAdvancePayment != ''"> and is_advance_payment = #{isAdvancePayment}</if>
-            <if test="weight != null "> and weight = #{weight}</if>
-            <if test="weightUnit != null  and weightUnit != ''"> and weight_unit = #{weightUnit}</if>
-            <if test="subOrderPrice != null "> and sub_order_price = #{subOrderPrice}</if>
-            <if test="mainOrderPrice != null "> and main_order_price = #{mainOrderPrice}</if>
-            <if test="aboveLimitWeight != null "> and above_limit_weight = #{aboveLimitWeight}</if>
-            <if test="aboveLimitWeightUnit != null  and aboveLimitWeightUnit != ''"> and above_limit_weight_unit = #{aboveLimitWeightUnit}</if>
-            <if test="goodsPrice != null "> and goods_price = #{goodsPrice}</if>
-            <if test="paymentAmount != null "> and payment_amount = #{paymentAmount}</if>
-            <if test="settlementAmount != null "> and settlement_amount = #{settlementAmount}</if>
-            <if test="deferredPayment != null "> and deferred_payment = #{deferredPayment}</if>
-            <if test="deferredSettlement != null "> and deferred_settlement = #{deferredSettlement}</if>
-            <if test="isUploadDetailsManagement != null  and isUploadDetailsManagement != ''"> and is_upload_details_management = #{isUploadDetailsManagement}</if>
-            <if test="floatRate != null  and floatRate != ''"> and float_rate = #{floatRate}</if>
+        select f.* from shipping_finance f inner join shipping_goods g on f.order_id = g.order_id
+        <where>
+            <if test="orderId != null  and orderId != ''"> and f.order_id = #{orderId}</if>
+            <if test="isAdvancePayment != null  and isAdvancePayment != ''"> and f.is_advance_payment = #{isAdvancePayment}</if>
+            <if test="weight != null "> and f.weight = #{weight}</if>
+            <if test="weightUnit != null  and weightUnit != ''"> and f.weight_unit = #{weightUnit}</if>
+            <if test="subOrderPrice != null "> and f.sub_order_price = #{subOrderPrice}</if>
+            <if test="mainOrderPrice != null "> and f.main_order_price = #{mainOrderPrice}</if>
+            <if test="aboveLimitWeight != null "> and f.above_limit_weight = #{aboveLimitWeight}</if>
+            <if test="aboveLimitWeightUnit != null  and aboveLimitWeightUnit != ''"> and f.above_limit_weight_unit = #{aboveLimitWeightUnit}</if>
+            <if test="goodsPrice != null "> and f.goods_price = #{goodsPrice}</if>
+            <if test="paymentAmount != null "> and f.payment_amount = #{paymentAmount}</if>
+            <if test="settlementAmount != null "> and f.settlement_amount = #{settlementAmount}</if>
+            <if test="deferredPayment != null "> and f.deferred_payment = #{deferredPayment}</if>
+            <if test="deferredSettlement != null "> and f.deferred_settlement = #{deferredSettlement}</if>
+            <if test="isUploadDetailsManagement != null  and isUploadDetailsManagement != ''"> and f.is_upload_details_management = #{isUploadDetailsManagement}</if>
+            <if test="floatRate != null  and floatRate != ''"> and f.float_rate = #{floatRate}</if>
+            <if test="taskStatus != null  and taskStatus != ''"> and g.status = #{taskStatus}</if>
         </where>
     </select>
     

@@ -251,6 +251,7 @@ import {
   updateSettlement
 } from "@/api/finance/finance"
 import finance from "@/views/finance/finance/index.vue";
+import {StatusEnum} from "@/common/taskStatus.enum";
 
 export default {
   name: "Finance",
@@ -327,6 +328,7 @@ export default {
     /** 查询财务管理列表 */
     getList() {
       this.loading = true
+      this.queryParams.taskStatus = StatusEnum.paid.value
       listFinance(this.queryParams).then(response => {
         this.financeList = response.rows
         this.total = response.total

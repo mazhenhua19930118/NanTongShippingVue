@@ -193,13 +193,6 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['finance:finance:edit']"
-          >填报卸货资料</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
             @click="handleFinanceUpdate(scope.row)"
             v-hasPermi="['finance:finance:edit']"
           >支付</el-button>
@@ -321,6 +314,7 @@
 <script>
 import { listFinance, getFinance, delFinance, addFinance, updateFinance,reportUnloadingData } from "@/api/finance/finance"
 import finance from "@/views/finance/finance/index.vue";
+import {StatusEnum} from "@/common/taskStatus.enum";
 
 export default {
   name: "Finance",
@@ -397,6 +391,7 @@ export default {
     /** 查询财务管理列表 */
     getList() {
       this.loading = true
+      this.queryParams.taskStatus = StatusEnum.upload_details.value
       listFinance(this.queryParams).then(response => {
         this.financeList = response.rows
         this.total = response.total

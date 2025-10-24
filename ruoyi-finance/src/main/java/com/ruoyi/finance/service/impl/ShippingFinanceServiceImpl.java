@@ -93,7 +93,7 @@ public class ShippingFinanceServiceImpl implements IShippingFinanceService
         }
         ShippingApprove shippingApprove = new ShippingApprove();
         shippingApprove.setOrderId(shippingFinance.getOrderId());
-        shippingApprove.setTaskStatus(TaskStatus.wait_upload_details.getCode());
+        shippingApprove.setTaskStatus(TaskStatus.wait_paid.getCode());
         List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
         if (CollectionUtils.isEmpty(shippingApproves)) {
             shippingApprove.setApplicantTime(DateUtils.getNowDate());
@@ -147,7 +147,7 @@ public class ShippingFinanceServiceImpl implements IShippingFinanceService
     public AjaxResult settlement(ShippingFinance shippingFinance)
     {
         ShippingFinance finance = shippingFinanceMapper.selectShippingFinanceById(shippingFinance.getId());
-        if (shippingFinance.getPaymentAmount() == null) {
+        if (finance.getPaymentAmount() == null) {
             return AjaxResult.error("请先填写支付金额！");
         }
         if (shippingFinance.getSettlementAmount() == null) {

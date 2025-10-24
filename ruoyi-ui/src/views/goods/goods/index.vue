@@ -75,22 +75,22 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="发布者" prop="publishBy">
-        <el-input
-          v-model="queryParams.publishBy"
-          placeholder="请输入发布者"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="发布时间" prop="publishTime">
-        <el-date-picker clearable
-          v-model="queryParams.publishTime"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="请选择发布时间">
-        </el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="发布者" prop="publishBy">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.publishBy"-->
+<!--          placeholder="请输入发布者"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="发布时间" prop="publishTime">-->
+<!--        <el-date-picker clearable-->
+<!--          v-model="queryParams.publishTime"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="请选择发布时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -164,12 +164,12 @@
       </template>
       </el-table-column>
       <el-table-column label="货物" align="center" prop="goods" />
-      <el-table-column label="发布者" align="center" prop="publishBy" />
-      <el-table-column label="发布时间" align="center" prop="publishTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.publishTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="发布者" align="center" prop="publishBy" />-->
+<!--      <el-table-column label="发布时间" align="center" prop="publishTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.publishTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

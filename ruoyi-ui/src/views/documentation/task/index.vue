@@ -96,9 +96,6 @@
       <el-table-column type="selection"
                        width="55"
                        align="center" />
-      <el-table-column label="序号"
-                       align="center"
-                       prop="id" />
       <el-table-column label="订单编号"
                        align="center"
                        prop="orderId" />
