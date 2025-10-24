@@ -35,6 +35,14 @@ export function updateFinance(data) {
   })
 }
 
+export function reportUnloadingData(data) {
+  return request({
+    url: '/finance/finance/reportUnloadingData',
+    method: 'post',
+    data: data
+  })
+}
+
 // 删除财务管理
 export function delFinance(id) {
   return request({

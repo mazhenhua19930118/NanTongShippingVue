@@ -75,7 +75,26 @@ public class ShippingFinance extends BaseEntity
     @Excel(name = "是否上传卸货管理明细")
     private String isUploadDetailsManagement;
 
-    public void setId(Long id) 
+    private BigDecimal floatRate;
+    private String floatRatePercent;
+
+    public String getFloatRatePercent() {
+        return floatRatePercent;
+    }
+
+    public void setFloatRatePercent(String floatRatePercent) {
+        this.floatRatePercent = floatRatePercent;
+    }
+
+    public BigDecimal getFloatRate() {
+        return floatRate;
+    }
+
+    public void setFloatRate(BigDecimal floatRate) {
+        this.floatRate = floatRate;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

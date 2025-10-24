@@ -109,6 +109,8 @@ public class ShippingApproveServiceImpl implements IShippingApproveService
                 shippingTaskService.generateTaskAndDetails(shippingTask);
                 shippingTask.setTaskStatus(TaskStatus.wait_unloaded.getCode());
                 shippingTaskService.updateShippingTask(shippingTask);
+            }else if(StringUtil.isEquals(shippingTask.getTaskStatus(), TaskStatus.wait_upload_details.getCode())){
+                shippingTaskService.generateTaskAndDetails(shippingTask);
             }
 
         }

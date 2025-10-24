@@ -161,7 +161,7 @@
 <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
 <!--    </el-row>-->
 
-    <el-table v-loading="loading" :data="financeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="financeList" @selection-change="handleSelectionChange" :cell-style="cellStyle">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
@@ -178,7 +178,7 @@
         <dict-tag :options="dict.type.ship_unit" :value="scope.row.aboveLimitWeightUnit"/>
       </template>
       </el-table-column>
-      <el-table-column label="损耗" align="center" prop="float" />
+      <el-table-column label="损耗" align="center" prop="floatRatePercent" />
       <el-table-column label="主订单价格" align="center" prop="mainOrderPrice" />
       <el-table-column label="子订单价格" align="center" prop="subOrderPrice" />
       <el-table-column label="货物价格" align="center" prop="goodsPrice" />
@@ -200,7 +200,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="handleFinanceUpdate(scope.row)"
             v-hasPermi="['finance:finance:edit']"
           >支付</el-button>
         </template>
@@ -274,7 +274,7 @@
 <!--        </el-form-item>-->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitLoadForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -319,7 +319,7 @@
 </template>
 
 <script>
-import { listFinance, getFinance, delFinance, addFinance, updateFinance } from "@/api/finance/finance"
+import { listFinance, getFinance, delFinance, addFinance, updateFinance,reportUnloadingData } from "@/api/finance/finance"
 import finance from "@/views/finance/finance/index.vue";
 
 export default {
@@ -385,6 +385,15 @@ export default {
     this.getList()
   },
   methods: {
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (column.property === 'floatRatePercent') {
+        // 判断 floatRate 是否大于 4
+        if (row.floatRate * 100 > 4) {
+          return {color: 'red'}
+        }
+      }
+      return {}
+    },
     /** 查询财务管理列表 */
     getList() {
       this.loading = true
@@ -397,6 +406,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false
+      this.openFinance = false
       this.reset()
     },
     // 表单重置
@@ -453,9 +463,21 @@ export default {
       getFinance(id).then(response => {
         this.form = response.data
         this.open = true
-        this.title = "修改财务管理"
+        this.title = "修改卸货数据管理"
       })
     },
+
+    handleFinanceUpdate(row) {
+      this.reset()
+      const id = row.id || this.ids
+      getFinance(id).then(response => {
+        this.form = response.data
+        this.openFinance = true
+        this.financeTitle = "修改支付管理"
+      })
+    },
+
+
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -470,6 +492,27 @@ export default {
             addFinance(this.form).then(response => {
               this.$modal.msgSuccess("新增成功")
               this.open = false
+              this.getList()
+            })
+          }
+        }
+      })
+    },
+
+    /** 提交按钮 */
+    submitLoadForm() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != null) {
+            reportUnloadingData(this.form).then(response => {
+              this.$modal.msgSuccess("修改成功")
+              this.openFinance = false
+              this.getList()
+            })
+          } else {
+            addFinance(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功")
+              this.openFinance = false
               this.getList()
             })
           }

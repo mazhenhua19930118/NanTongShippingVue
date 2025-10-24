@@ -1,5 +1,6 @@
 package com.ruoyi.finance.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,6 +44,12 @@ public class ShippingFinanceController extends BaseController
     {
         startPage();
         List<ShippingFinance> list = shippingFinanceService.selectShippingFinanceList(shippingFinance);
+        for (ShippingFinance finance : list) {
+            if (finance.getFloatRate() != null) {
+                String ff = finance.getFloatRate().multiply(new BigDecimal("100")).toString();
+                finance.setFloatRatePercent(ff + "%");
+            }
+        }
         return getDataTable(list);
     }
 
@@ -88,7 +95,14 @@ public class ShippingFinanceController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingFinance shippingFinance)
     {
-        return toAjax(shippingFinanceService.updateShippingFinance(shippingFinance));
+        return shippingFinanceService.updateShippingFinance(shippingFinance);
+    }
+
+    @Log(title = "填报卸货数据", businessType = BusinessType.UPDATE)
+    @PostMapping("reportUnloadingData")
+    public AjaxResult reportUnloadingData(@RequestBody ShippingFinance shippingFinance)
+    {
+        return shippingFinanceService.reportUnloadingData(shippingFinance);
     }
 
     /**

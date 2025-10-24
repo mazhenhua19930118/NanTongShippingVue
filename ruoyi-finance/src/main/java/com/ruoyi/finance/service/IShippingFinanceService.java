@@ -1,6 +1,8 @@
 package com.ruoyi.finance.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.finance.domain.ShippingFinance;
 
 /**
@@ -41,7 +43,8 @@ public interface IShippingFinanceService
      * @param shippingFinance 财务管理
      * @return 结果
      */
-    public int updateShippingFinance(ShippingFinance shippingFinance);
+    public AjaxResult updateShippingFinance(ShippingFinance shippingFinance);
+    public AjaxResult reportUnloadingData(ShippingFinance shippingFinance);
 
     /**
      * 批量删除财务管理
