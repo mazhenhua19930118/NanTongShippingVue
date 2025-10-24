@@ -9,6 +9,14 @@ export function listGoods(query) {
   })
 }
 
+export function comprehensive(query) {
+  return request({
+    url: '/goods/goods/comprehensive/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function listArrivalGoods(query) {
   return request({
     url: '/goods/goods/arrival/list',

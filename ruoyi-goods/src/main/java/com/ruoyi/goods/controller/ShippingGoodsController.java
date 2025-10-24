@@ -50,6 +50,14 @@ public class ShippingGoodsController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/comprehensive/list")
+    public TableDataInfo comprehensive(ShippingGoods shippingGoods)
+    {
+        startPage();
+        List<ShippingGoods> list = shippingGoodsService.selectShippingGoodsList(shippingGoods);
+        return getDataTable(list);
+    }
+
     @GetMapping("/arrival/list")
     public TableDataInfo arrviaList(ShippingGoods shippingGoods)
     {
