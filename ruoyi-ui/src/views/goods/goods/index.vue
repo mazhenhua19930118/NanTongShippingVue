@@ -358,6 +358,31 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        shippingUnit: [
+          { required: true, message: "托运单位不能为空", trigger: "blur" }
+        ],
+        transitPort: [
+          { required: true, message: "中转港不能为空", trigger: "blur" }
+        ],
+        helenNumber: [
+          { required: true, message: "海伦号不能为空", trigger: "blur" }
+        ],
+        shipNumber: [
+          { required: true, message: "船号不能为空", trigger: "blur" }
+        ],
+        weight: [
+          { required: true, message: "重量不能为空", trigger: "blur" }
+        ],
+        weightUnit: [
+          { required: true, message: "重量单位不能为空", trigger: "blur" }
+        ],
+        goods: [
+          { required: true, message: "货物不能为空", trigger: "blur" }
+        ],
+        destinationPort: [
+          { required: true, message: "目的地港不能为空", trigger: "blur" }
+        ],
+
       }
     }
   },

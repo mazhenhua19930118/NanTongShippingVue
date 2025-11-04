@@ -41,6 +41,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="approveTime != null "> and approve_time = #{approveTime}</if>
             <if test="approveStatus != null  and approveStatus != ''"> and approve_status = #{approveStatus}</if>
             <if test="taskStatus != null  and taskStatus != ''"> and task_status = #{taskStatus}</if>
+            <if test="taskStatusList != null "> and task_status in  <foreach item="status" collection="taskStatusList" open="(" separator="," close=")">
+                #{status}
+            </foreach></if>
         </where>
     </select>
     

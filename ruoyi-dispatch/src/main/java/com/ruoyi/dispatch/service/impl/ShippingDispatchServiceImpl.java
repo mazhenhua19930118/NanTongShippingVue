@@ -1,11 +1,21 @@
 package com.ruoyi.dispatch.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ruoyi.approve.domain.ShippingApprove;
+import com.ruoyi.approve.mapper.ShippingApproveMapper;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.enums.TaskStatus;
+import com.ruoyi.common.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.dispatch.mapper.ShippingDispatchMapper;
 import com.ruoyi.dispatch.domain.ShippingDispatch;
 import com.ruoyi.dispatch.service.IShippingDispatchService;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * 调度管理Service业务层处理
@@ -18,6 +28,8 @@ public class ShippingDispatchServiceImpl implements IShippingDispatchService
 {
     @Autowired
     private ShippingDispatchMapper shippingDispatchMapper;
+    @Autowired
+    private ShippingApproveMapper shippingApproveMapper;
 
     /**
      * 查询调度管理
@@ -62,9 +74,21 @@ public class ShippingDispatchServiceImpl implements IShippingDispatchService
      * @return 结果
      */
     @Override
-    public int updateShippingDispatch(ShippingDispatch shippingDispatch)
+    public AjaxResult updateShippingDispatch(ShippingDispatch shippingDispatch)
     {
-        return shippingDispatchMapper.updateShippingDispatch(shippingDispatch);
+        ShippingApprove shippingApprove = new ShippingApprove();
+        shippingApprove.setOrderId(shippingDispatch.getOrderId());
+        List<String> taskList = Arrays.asList(TaskStatus.deposit_paid.getCode(), TaskStatus.shipping_fee_paid.getCode(), TaskStatus.shipping_fee_deposit_paid.getCode());
+        shippingApprove.setTaskStatusList(taskList);
+        List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
+        if(!CollectionUtils.isEmpty(shippingApproves)){
+            List<ShippingApprove> approvingList = shippingApproves.stream().filter(v -> v.getApproveStatus() == null).collect(Collectors.toList());
+            if(CollectionUtils.isEmpty(approvingList)){
+                return AjaxResult.error("该订单正在审批中！暂时无法修改！");
+            }
+        }
+        shippingDispatchMapper.updateShippingDispatch(shippingDispatch);
+        return AjaxResult.success();
     }
 
     /**

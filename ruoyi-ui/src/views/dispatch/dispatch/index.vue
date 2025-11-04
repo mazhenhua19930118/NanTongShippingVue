@@ -93,9 +93,9 @@
       <el-table-column label="订单编号" align="center" prop="orderId" />
       <el-table-column label="定金" align="center" prop="deposit" />
       <el-table-column label="航费" align="center" prop="shippingCost" />
-      <el-table-column label="是否需要签订子合同" align="center" prop="isPreInsurance">
+      <el-table-column label="是否需要签订子合同" align="center" prop="isNeedSubSign">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.isPreInsurance"/>
+          <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.isNeedSubSign"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -145,8 +145,8 @@
         <el-form-item label="航费" prop="shippingCost">
           <el-input v-model="form.shippingCost" placeholder="请输入航费" />
         </el-form-item>
-        <el-form-item label="是否需要签订子合同" prop="isPreInsurance">
-          <el-select v-model="form.isPreInsurance" placeholder="请选择是否需要签订子合同">
+        <el-form-item label="是否需要签订子合同" prop="isNeedSubSign">
+          <el-select v-model="form.isNeedSubSign" placeholder="请选择是否需要签订子合同">
             <el-option
               v-for="dict in dict.type.ship_yes_no"
               :key="dict.value"
@@ -233,7 +233,7 @@ export default {
         orderId: null,
         deposit: null,
         shippingCost: null,
-        isPreInsurance: null
+        isNeedSubSign: null
       },
       // 表单参数
       form: {},
@@ -304,7 +304,7 @@ export default {
         orderId: null,
         deposit: null,
         shippingCost: null,
-        isPreInsurance: null
+        isNeedSubSign: null
       }
       this.resetForm("form")
     },

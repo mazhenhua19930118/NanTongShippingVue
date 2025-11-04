@@ -1,6 +1,7 @@
 package com.ruoyi.dispatch.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
@@ -108,7 +109,7 @@ public class ShippingDispatchController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody ShippingDispatch shippingDispatch)
     {
-        return toAjax(shippingDispatchService.updateShippingDispatch(shippingDispatch));
+        return shippingDispatchService.updateShippingDispatch(shippingDispatch);
     }
 
     /**
@@ -162,13 +163,21 @@ public class ShippingDispatchController extends BaseController
         if (dispatch.getDeposit() != null || dispatch.getShippingCost() != null) {
             ShippingApprove shippingApprove = new ShippingApprove();
             shippingApprove.setOrderId(shippingTask.getOrderId());
+            List<String> taskList = Arrays.asList(TaskStatus.deposit_paid.getCode(), TaskStatus.shipping_fee_paid.getCode(), TaskStatus.shipping_fee_deposit_paid.getCode());
+            shippingApprove.setTaskStatusList(taskList);
             List<ShippingApprove> shippingApproves = shippingApproveMapper.selectShippingApproveList(shippingApprove);
+            shippingApproves =  shippingApproves.stream()
+                    .sorted((a, b) -> Long.compare(b.getId(), a.getId())) // 按照ID倒序排序
+                    .collect(Collectors.toList());
             if (CollectionUtils.isEmpty(shippingApproves)) {
-                if (dispatch.getDeposit() != null) {
+                if (dispatch.getDeposit() != null && dispatch.getShippingCost() == null) {
+                    shippingApprove.setTaskStatus(TaskStatus.deposit_paid.getCode());
                     shippingApprove.setApplicantReason(ApproveReason.deposit.getDesc());
-                } else if (dispatch.getShippingCost() != null) {
+                } else if (dispatch.getShippingCost() != null && dispatch.getDeposit() == null) {
+                    shippingApprove.setTaskStatus(TaskStatus.shipping_fee_paid.getCode());
                     shippingApprove.setApplicantReason(ApproveReason.shippingCost.getDesc());
                 } else {
+                    shippingApprove.setTaskStatus(TaskStatus.shipping_fee_deposit_paid.getCode());
                     shippingApprove.setApplicantReason(ApproveReason.deposit_shippingCost.getDesc());
                 }
                 shippingApprove.setApplicantUser(getUsername());
@@ -185,12 +194,14 @@ public class ShippingDispatchController extends BaseController
 //                }
                 return AjaxResult.success("请求成功，已提交总经理审批！");
             } else {
-                ShippingApprove exist = shippingApproves.get(0);
-                if (StringUtil.isEmpty(exist.getApproveStatus())) {
+                List<ShippingApprove> approvingList = shippingApproves.stream().filter(v -> v.getApproveStatus() == null).collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(approvingList)) {
                     return AjaxResult.error("正在审批中，请耐心等待！");
                 }
-                if (StringUtil.isEquals(exist.getApproveStatus(), ApproveStatus.NO.getCode())) {
-                    return AjaxResult.error("审批不通过！");
+                approvingList = shippingApproves.stream().filter(v -> StringUtil.isEquals(v.getApproveStatus(), ApproveStatus.NO.getCode())).collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(approvingList)) {
+                    ShippingApprove reason = shippingApproves.get(0);
+                    return AjaxResult.error("审批不通过！原因:【"+reason.getApproveReason()+"】");
                 }
             }
         }

@@ -1,6 +1,8 @@
 package com.ruoyi.dispatch.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.dispatch.domain.ShippingDispatch;
 
 /**
@@ -41,7 +43,7 @@ public interface IShippingDispatchService
      * @param shippingDispatch 调度管理
      * @return 结果
      */
-    public int updateShippingDispatch(ShippingDispatch shippingDispatch);
+    public AjaxResult updateShippingDispatch(ShippingDispatch shippingDispatch);
 
     /**
      * 批量删除调度管理
