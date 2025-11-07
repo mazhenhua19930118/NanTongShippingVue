@@ -40,7 +40,7 @@
           <div class="body">
             <p>
               <i class="el-icon-s-promotion"></i> 官网：<el-link
-              href="http://www.ruoyi.vip"
+              href="http://www.ggmsb.com.cn"
               target="_blank"
             >http://www.ggmsb.com.cn</el-link
             >
