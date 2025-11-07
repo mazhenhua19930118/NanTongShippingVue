@@ -139,10 +139,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	</delete>
 	<!--	查询内勤人员-->
 	<select id="selectNqPeople"  resultMap="SysUserResult">
-		select u.*
-		from sys_post p
-				 inner join sys_user_post up on up.post_id = p.post_id
-				 inner join sys_user u on u.user_id = up.user_id
-		where p.post_code ='nq' and p.status = '0';
+		select p.*
+		from sys_user p
+				 inner join sys_user_role up on up.user_id = p.user_id
+				 inner join sys_role u on up.role_id = u.role_id
+		where u.role_key ='staff' and p.status = '0';
 	</select>
 </mapper> 
