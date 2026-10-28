@@ -9,14 +9,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="主合同名称" prop="mainContractName">
-        <el-input
-          v-model="queryParams.mainContractName"
-          placeholder="请输入主合同名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="主合同名称" prop="mainContractName">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.mainContractName"-->
+<!--          placeholder="请输入主合同名称"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
       <el-form-item label="子合同编号" prop="subContractNo">
         <el-input
           v-model="queryParams.subContractNo"
@@ -25,22 +25,22 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="子合同名称" prop="subContractName">
-        <el-input
-          v-model="queryParams.subContractName"
-          placeholder="请输入子合同名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="订单编号" prop="orderId">
-        <el-input
-          v-model="queryParams.orderId"
-          placeholder="请输入订单编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
+<!--      <el-form-item label="子合同名称" prop="subContractName">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.subContractName"-->
+<!--          placeholder="请输入子合同名称"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="订单编号" prop="orderId">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.orderId"-->
+<!--          placeholder="请输入订单编号"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
 <!--      <el-form-item label="主合同是否签订" prop="mainContractSign">-->
 <!--        <el-select v-model="queryParams.mainContractSign" placeholder="请选择主合同是否签订" clearable>-->
 <!--          <el-option-->
@@ -133,10 +133,10 @@
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="${comment}" align="center" prop="id" />-->
       <el-table-column label="主合同编号" align="center" prop="mainContractNo" />
-      <el-table-column label="主合同名称" align="center" prop="mainContractName" />
+<!--      <el-table-column label="主合同名称" align="center" prop="mainContractName" />-->
       <el-table-column label="子合同编号" align="center" prop="subContractNo" />
-      <el-table-column label="子合同名称" align="center" prop="subContractName" />
-      <el-table-column label="订单编号" align="center" prop="orderId" />
+<!--      <el-table-column label="子合同名称" align="center" prop="subContractName" />-->
+<!--      <el-table-column label="订单编号" align="center" prop="orderId" />-->
 <!--      <el-table-column label="主合同是否签订1" align="center" prop="mainContractSign">-->
 <!--        <template slot-scope="scope">-->
 <!--          <dict-tag :options="dict.type.ship_yes_no" :value="scope.row.mainContractSign"/>-->
@@ -183,18 +183,18 @@
         <el-form-item label="主合同编号" prop="mainContractNo">
           <el-input v-model="form.mainContractNo" placeholder="请输入主合同编号" />
         </el-form-item>
-        <el-form-item label="主合同名称" prop="mainContractName">
-          <el-input v-model="form.mainContractName" placeholder="请输入主合同名称" />
-        </el-form-item>
-        <el-form-item label="子合同编号" prop="subContractNo">
-          <el-input v-model="form.subContractNo" placeholder="请输入子合同编号" />
-        </el-form-item>
-        <el-form-item label="子合同名称" prop="subContractName">
-          <el-input v-model="form.subContractName" placeholder="请输入子合同名称" />
-        </el-form-item>
-        <el-form-item label="订单编号" prop="orderId">
-          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>
-        </el-form-item>
+<!--        <el-form-item label="主合同名称" prop="mainContractName">-->
+<!--          <el-input v-model="form.mainContractName" placeholder="请输入主合同名称" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="子合同编号" prop="subContractNo">-->
+<!--          <el-input v-model="form.subContractNo" placeholder="请输入子合同编号" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="子合同名称" prop="subContractName">-->
+<!--          <el-input v-model="form.subContractName" placeholder="请输入子合同名称" />-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="订单编号" prop="orderId">-->
+<!--          <el-input v-model="form.orderId" placeholder="请输入订单编号" disabled/>-->
+<!--        </el-form-item>-->
 <!--        <el-form-item label="主合同是否签订" prop="mainContractSign">-->
 <!--          <el-select v-model="form.mainContractSign" placeholder="请选择主合同是否签订" :disabled="form.mainContractSign=='1'">-->
 <!--            <el-option-->

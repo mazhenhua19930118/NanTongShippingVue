@@ -91,6 +91,9 @@ public class ShippingContractServiceImpl implements IShippingContractService
         if (!CollectionUtils.isEmpty(shippingContracts)) {
             return AjaxResult.error("主合同编号已存在");
         }
+        if(StringUtil.isEmpty(shippingContract.getSubContractNo())){
+            shippingContract.setSubContractNo(shippingContract.getMainContractNo()+"-1");
+        }
         shippingContractMapper.insertShippingContract(shippingContract);
         ShippingGoods shippingGoods = new ShippingGoods();
         shippingGoods.setOrderId(orderCode);

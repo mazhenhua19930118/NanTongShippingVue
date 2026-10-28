@@ -154,7 +154,7 @@
 <!--    </el-row>-->
 
     <el-table v-loading="loading" :data="goodsList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+<!--      <el-table-column type="selection" width="55" align="center" />-->
 <!--      <el-table-column label="id" align="center" prop="id" />-->
       <el-table-column label="托运单位" align="center" prop="shippingUnit" />
       <el-table-column label="订单编号" align="center" prop="orderId" />
