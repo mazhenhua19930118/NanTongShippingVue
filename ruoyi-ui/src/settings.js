@@ -5,6 +5,11 @@ module.exports = {
   title: process.env.VUE_APP_TITLE,
 
   /**
+   * 主题色（与登录页/首页蓝色品牌风格保持一致）
+   */
+  theme: '#2f7fd0',
+
+  /**
    * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
    */
   sideTheme: 'theme-dark',

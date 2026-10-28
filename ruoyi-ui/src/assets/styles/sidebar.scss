@@ -15,7 +15,7 @@
     -webkit-transition: width .28s;
     transition: width 0.28s;
     width: $base-sidebar-width !important;
-    background-color: $base-menu-background;
+    background: $base-menu-background;
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -80,7 +80,7 @@
     .submenu-title-noDropdown,
     .el-submenu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgba(47, 127, 208, 0.16) !important;
       }
     }
 
@@ -93,7 +93,7 @@
       min-width: $base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgba(47, 127, 208, 0.16) !important;
       }
     }
 
@@ -103,6 +103,28 @@
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
+      }
+    }
+
+    // 选中菜单项高亮（呼应登录页蓝色品牌色）
+    & .theme-dark .el-menu-item.is-active {
+      color: #ffffff !important;
+      background-color: rgba(47, 127, 208, 0.22) !important;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: #38b6ff;
+      }
+
+      i,
+      .svg-icon {
+        color: #ffffff !important;
       }
     }
   }

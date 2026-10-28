@@ -52,14 +52,14 @@ export default {
   opacity: 0;
 }
 
-.sidebar-logo-container {
-  position: relative;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
-  text-align: center;
-  overflow: hidden;
+  .sidebar-logo-container {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: transparent;
+    text-align: center;
+    overflow: hidden;
 
   & .sidebar-logo-link {
     height: 100%;

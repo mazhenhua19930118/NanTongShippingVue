@@ -92,8 +92,8 @@
   .el-table__header-wrapper, .el-table__fixed-header-wrapper {
     th {
       word-break: break-word;
-      background-color: #f8f8f9;
-      color: #515a6e;
+      background-color: #eaf2fb;
+      color: #1c3f6e;
       height: 40px;
       font-size: 13px;
     }
@@ -184,9 +184,16 @@
   float: right !important;
 }
 
+.el-card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(28, 63, 110, .08);
+}
+
 .el-card__header {
   padding: 14px 15px 7px;
   min-height: 40px;
+  border-bottom: 1px solid #eef2f7;
 }
 
 .el-card__body {
