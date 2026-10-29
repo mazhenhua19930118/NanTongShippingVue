@@ -46,11 +46,15 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  /* 50= navbar  50
+     作为内容滚动容器：填充剩余高度并内部滚动，
+     多余内容出现滚动条，而非被截断 */
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .app-main:has(.copyright) {
@@ -62,11 +66,6 @@ export default {
 }
 
 .hasTagsView {
-  .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
-  }
-
   .fixed-header + .app-main {
     padding-top: 84px;
   }
